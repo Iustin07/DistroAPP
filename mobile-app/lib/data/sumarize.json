@@ -1,0 +1,37 @@
+[{
+
+    "productName":"Stella Artois NA can",
+    "quantity":10,
+    "unitMeasure":"buc"
+},
+{
+
+    "productName":"Bergenbier can",
+    "quantity":480,
+    "unitMeasure":"buc"
+},
+{
+
+    "productName":"Bergenbier nav",
+    "quantity":10,
+    "unitMeasure":"Nav"
+},
+{
+
+    "productName":"Bergenbier NA nav",
+    "quantity":20,
+    "unitMeasure":"Nav"
+},
+{
+
+    "productName":"Bergenbier NA can",
+    "quantity":480,
+    "unitMeasure":"Buc"
+},
+{
+
+    "productName":"Staropramen",
+    "quantity":10,
+    "unitMeasure":"Buc"
+}
+]
