@@ -1,4 +1,14 @@
 /* #region */
+import 'package:distroapp/providers/transport_cart.dart';
+import 'package:distroapp/providers/transports.dart';
+import 'package:distroapp/screens/accountant_screens.dart/add_transport.dart';
+import 'package:distroapp/screens/driver_screens/centralizerdetailscreen.dart';
+import 'package:distroapp/screens/driver_screens/view_centralizer_screen.dart';
+import 'package:distroapp/screens/manager_screens.dart/manage_losts_manager.dart';
+import 'package:distroapp/screens/storeman_screens/detailing_transport.dart';
+import 'package:distroapp/screens/storeman_screens/waiting_transports_screen.dart';
+import 'package:distroapp/widgets/clients/modify_client_screen.dart';
+
 import './screens/storeman_screens/manage_losts_screen.dart';
 import './screens/storeman_screens/shipping_screen.dart';
 import './widgets/clients/waiting_clients.dart';
@@ -34,6 +44,7 @@ import './providers/clients.dart';
 import './providers/users.dart';
 import './providers/orders_provider.dart';
 import './providers/stats_provider.dart';
+import './providers/losts.dart';
 /* #endregion */
 
 void main() {
@@ -72,7 +83,11 @@ class MyApp extends StatelessWidget {
               Orders(Provider.of<Authentication>(ctx, listen: false).token,),
           update: (ctx, auth, previous) => Orders(auth.token),
         ),
-     
+         ChangeNotifierProxyProvider<Authentication, Losts>(
+          create: (ctx) =>
+              Losts(Provider.of<Authentication>(ctx, listen: false).token),
+          update: (ctx, auth, previous) => Losts(auth.token),
+        ),
         ChangeNotifierProvider.value(
           value: Stats(),
         ),
@@ -81,10 +96,16 @@ class MyApp extends StatelessWidget {
               Centralizers(Provider.of<Authentication>(ctx, listen: false).token,),
           update: (ctx, auth, previous) => Centralizers(auth.token),
         ),
-
+ ChangeNotifierProxyProvider<Authentication,Transports>(
+          create: (ctx) =>
+              Transports(Provider.of<Authentication>(ctx, listen: false).token,),
+          update: (ctx, auth, previous) =>Transports(auth.token),
+        ),
         ChangeNotifierProvider.value(
           value: CustomCentralizer(),
         ),
+        
+         ChangeNotifierProvider.value(value: TransportCart()),
       ],
       child: Consumer<Authentication>(
         builder: (ctx, authenticate, _) => MaterialApp(
@@ -95,9 +116,9 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.blue[800],
            textTheme: const TextTheme(titleSmall: TextStyle(color: Colors.white)) 
           ),
-          home:authenticate.isAuth? HomeScreen(role: authenticate.getRole):
-          const AuthScreen(),
-         // home: HomeScreen(role: 'accountant'),
+           home:authenticate.isAuth? HomeScreen(role: authenticate.getRole):
+           const AuthScreen(),
+       //home:const  HomeScreen(role: 'accountant'),
 
           routes: {
             AuthScreen.routeName: (ctx) => const AuthScreen(),
@@ -122,8 +143,15 @@ class MyApp extends StatelessWidget {
             ManageCentralizerScreen.routeName: (ctx) =>const ManageCentralizerScreen(),
             ClientLocation.routeName:(ctx)=>ClientLocation(),
             WaitingClientsScreen.routeName:(ctx)=>WaitingClientsScreen(),
-            ManageLostsScreen.routeName:(ctx)=>ManageLostsScreen(),
-            ShippingScreen.routeName:(ctx) => ShippingScreen(),    
+            ManageLostsScreen.routeName:(ctx)=>const ManageLostsScreen(),
+            ShippingScreen.routeName:(ctx) => const ShippingScreen(),  
+            ViewCentralizerScreen.routeName:(ctx)=>const ViewCentralizerScreen() , 
+            CentralizerDetailsScreen.routeName:(ctx)=>const CentralizerDetailsScreen(),
+            ManageLostsManagerScreen.routeName:(ctx)=>const ManageLostsManagerScreen(),
+            ModifyClient.routeName:(ctx)=>const ModifyClient(),
+            WaitingTransportsScreen.routeName:(ctx)=>const WaitingTransportsScreen(),
+            TransportDetails.routeName:(ctx)=>TransportDetails(),
+            AddTransportScreen.routeName:(ctx)=>const AddTransportScreen(),
           },
         ),
       ),

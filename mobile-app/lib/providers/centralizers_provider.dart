@@ -1,15 +1,11 @@
 import 'package:distroapp/model/custom_centralizer.dart';
-
 import '../model/summar.dart';
 import '../model/centralizer.dart';
 import 'dart:convert';
-import 'package:flutter/services.dart';
-import '../model/order.dart';
 import 'package:flutter/foundation.dart';
-import '../model/client.dart';
-
+import '../properties.dart' show serverUrl;
 import 'package:http/http.dart' as http;
-
+import '../properties.dart';
 class Centralizers with ChangeNotifier {
   List<Centralizer> _centralizers = [];
   List<Summar> _summary = [];
@@ -26,7 +22,7 @@ class Centralizers with ChangeNotifier {
   }
 
   Future<dynamic> addCentralizer(Iterable<CustomItem> ordersIds, int driverId) async {
-    final url = Uri.parse('http://192.168.0.103:3000/centralizers');
+    final url = Uri.parse('$serverUrl/centralizers');
     try {
       final ids=ordersIds.map((e) => e.orderId).toList();
       final response =
@@ -49,15 +45,12 @@ class Centralizers with ChangeNotifier {
   }
 
   Future<List<Summar>> readSummar(int id) async {
-    print('called summar fetch');
-    print(id);
     final url =
-        Uri.parse('http://192.168.0.103:3000/centralizers/summarize/$id');
+        Uri.parse('$serverUrl/centralizers/summarize/$id');
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Bearer $_token'});
       Iterable data = json.decode(response.body);
-      print(response.body);
      return data.map((e) => getSummarFromJsom(e)).toList();
      
     } catch (error) {
@@ -67,59 +60,51 @@ class Centralizers with ChangeNotifier {
 
   Summar getSummarFromJsom(Map json) {
     return Summar(
-        json["productName"], json["quantity"] as int, json["measureUnit"]);
+        json["productName"], DividerObject.mapJsonToDivider(json["summar"]));
   }
 
 Future<List<Centralizer>> fetchCentralizers() async {
-  print('fetch centralizers called');
-  final url=Uri.parse("http://192.168.0.103:3000/centralizers/all");
+  final url=Uri.parse("$serverUrl/centralizers/all");
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Bearer $_token'});
       Iterable data = json.decode(response.body);
-      return  data.map((e) => getCentralizer(e)).toList();
+      return  data.map((e) => Centralizer.mapJsonToObeject(e)).toList();
       
     } catch (error) {
       throw (error);
     }
  
 }
+Future<Centralizer> fectchById(int id)async{
+  final url=Uri.parse('$serverUrl/centralizers/$id');
+  try {
+      final response =
+          await http.get(url, headers: {'Authorization': 'Bearer $_token'});
+          print(response.body);
+      Map data = json.decode(response.body);
+      return  Centralizer.mapJsonToObeject(data);
+      
+    } catch (error) {
+      throw (error);
+    }
+}
+Future <List<Centralizer>> fetchCentralizersByDateAndDriver(String date)async{
+final url=Uri.parse('${serverUrl}/centralizers/driver?date=$date');
+try {
+      final response =
+          await http.get(url, headers: {'Authorization': 'Bearer $_token'});
+      Iterable data = json.decode(response.body);
+      return  data.map((e) =>Centralizer.mapJsonToObeject(e)).toList();
+      
+    } catch (error) {
+      throw (error);
+    }
+}
 
 
 
 
-
-  Centralizer getCentralizer(Map json) {
-    return Centralizer(
-        centralizerId: json["id"],
-        driverName: json["driverName"],
-        date: json["creationDate"],
-        orders: getOrderFromJson(json["orders"]));
-  }
-
-  List<Order> getOrderFromJson(Iterable data) {
-    return data
-        .map((json) => Order.all(
-            orderId: json["order"]["orderId"],
-            date: json["order"]["orderData"],
-            orderSellerAgent: json["order"]["orderSellerAgent"],
-            client: getClientFromJson(json["order"]["client"]),
-            orderPaymentValue: json["order"]["orderPaymentValue"],
-            totalWeight: json["order"]["totalWeight"],
-            orderProducts: []))
-        .toList();
-  }
-
-  Client getClientFromJson(Map clientjson) {
-    return Client.all(
-        clientjson["idClient"],
-        clientjson["clientName"],
-        clientjson["cif"],
-        clientjson["commerceRegistrationNumber"],
-        clientjson["adress"],
-        clientjson["clientPhoneNumber"],
-        clientjson["longitude"],
-        clientjson["latitude"]);
-  }
+  
 
 }

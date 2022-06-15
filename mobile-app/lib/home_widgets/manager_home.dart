@@ -1,3 +1,4 @@
+import '../screens/manager_screens.dart/manage_losts_manager.dart';
 import '../screens/manager_screens.dart/stats_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/grid_item.dart';
@@ -28,8 +29,8 @@ class _ManagerHomeState extends State<ManagerHome> {
                itemTitle: 'View Losts',
                color:const Color.fromARGB(255,244,208,111),
             iconp: Icons.book,
-            onTapHandler: (){}),
-               
+            onTapHandler: ()=>Navigator.of(context).pushNamed(ManageLostsManagerScreen.routeName),
+              ),
   
     
          ],

@@ -22,4 +22,18 @@ Centralizer({
    );
    return result;
   }
+static Centralizer mapJsonToObeject(Map jsonData){
+ return Centralizer(
+        centralizerId: jsonData["id"],
+        driverName: jsonData["driverName"],
+        date: jsonData["creationDate"],
+        orders: getOrderFromJson(jsonData["orders"]));
+}
+
+static List<Order> getOrderFromJson(Iterable data) {
+    return data
+        .map((json) => Order.mapOrderFromJson(json["order"]))
+        .toList();
+  }
+
 }

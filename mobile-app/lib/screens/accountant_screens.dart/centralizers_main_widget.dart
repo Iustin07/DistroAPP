@@ -198,13 +198,13 @@ class _CentralizerMainWidgetState extends State<CentralizerMainWidget> {
            backgroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromRGBO(192, 57, 43, 1.0)),),
           
-          onPressed: (){}, child: Text('${cart.totalAmount.toString()} RON', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
+          onPressed: (){}, child: Text('${cart.totalAmount.toStringAsFixed(2)} RON', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
                TextButton(
           style: ButtonStyle(elevation: MaterialStateProperty.all<double>(5.0),
            backgroundColor: MaterialStateProperty.all<Color>(
                          const  Color.fromRGBO(192, 57, 43, 1.0)),),
           
-          onPressed: (){}, child: Text('${cart.totalWeight.toString()} kg', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
+          onPressed: (){}, child: Text('${cart.totalWeight.toStringAsFixed(2)} kg', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
         
       ],
     );

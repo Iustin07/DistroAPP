@@ -36,7 +36,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   intl: ^0.17.0
   geolocator: ^8.2.1
-  #google_maps_flutter: ^2.1.7
+  flutter_rating_bar: ^4.0.1
+  google_maps_flutter: ^2.1.7
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -80,6 +81,11 @@ flutter:
      - assets/images/repair.jpeg
      - assets/images/truck.png
      - assets/images/wages.png
+     - assets/images/box-512.png
+     - assets/images/prod_search.png
+     - assets/images/shipping_icon2.png
+     - assets/images/rating2.png
+     - assets/images/debox.png
      - assets/images/shipping_icon.png
      - lib/data/monthly_stats.json
 

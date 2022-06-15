@@ -1,5 +1,7 @@
 
 
+import 'package:distroapp/widgets/clients/modify_client_screen.dart';
+
 import '../../screens/after_login.dart';
 import '../../screens/manage_clients.dart';
 import '../../widgets/clients/client_Location.dart';
@@ -65,11 +67,23 @@ class ClientItem extends StatelessWidget {
   List<Widget> getWidgets(BuildContext context){
     return
     <Widget>[
-                  IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+                  IconButton(onPressed: () {
+                      Provider.of<Clients>(context,listen: false).deleteClient(client.id as int).then((value){
+                        if(value==200){
+                          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => ManageClientsScreen(),
+            ),
+            ModalRoute.withName('/'));
+                        }
+                      });
+
+                  }, icon: Icon(Icons.delete)),
                   IconButton(
-                      onPressed: () {
-                        //Navigator.of(context).pushNamed();
-                      },
+                      onPressed: () =>
+                        Navigator.of(context).pushNamed(ModifyClient.routeName,arguments: client),
+                      
                       icon: Icon(Icons.mode_edit)),
                   IconButton(
                       onPressed: () => Navigator.push(

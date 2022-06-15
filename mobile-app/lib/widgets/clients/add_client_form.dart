@@ -135,10 +135,10 @@ bool _isLocationRequested=false;
                                                client["commerceRegistrationNumber"]=value;
                                              }),
                                             _isLocationRequested?CircularProgressIndicator() :Column(children: <Widget>[
-                                               CustomTextField('Longitude',latitude,1,TextInputType.number,_longitudeFocusNode,(value){
+                                               CustomTextField('Longitude',longitude,1,TextInputType.number,_longitudeFocusNode,(value){
                                               client["longitude"]=double.parse(value);
                                             }),
-                                             CustomTextField('Latitude',longitude,1,TextInputType.number,_latitudeFocusNode,(value){
+                                             CustomTextField('Latitude',latitude,1,TextInputType.number,_latitudeFocusNode,(value){
                                                client["latitude"]=double.parse(value);
                                              }),
                                              ],),

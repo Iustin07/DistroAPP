@@ -1,15 +1,11 @@
-
-import 'package:distroapp/model/httpexception.dart';
+import '../properties.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../model/order.dart';
 import '../model/orderItem.dart';
-import '../model/client.dart';
-import '../model/product.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../model/cart.dart' show CartItem;
-import 'package:intl/intl.dart';
 class Orders with ChangeNotifier{
 List<Order> _orders=[];
 String _token;
@@ -27,56 +23,17 @@ double get getTotalWeight{
    _orders.forEach((order) { sum+=order.totalWeight as double;});
 return sum;
 }
-Future<void> readJson() async {
-  print('call for readJson');
-    final String response = await rootBundle.loadString('lib/data/orders.json');
-    Iterable data = await json.decode(response);
-     _orders=data.map((e) => getOrderFromJson(e)).toList();
-  notifyListeners();
-}
-Order getOrderFromJson(Map json){
-return Order.all(orderId: json["orderId"],
- date: json["orderData"], 
- orderSellerAgent:json["orderSellerAgent"],
-  client: getClientFromJson(json["client"]),
-  orderPaymentValue: json["orderPaymentValue"],
-   totalWeight: json["totalWeight"],
-    orderProducts: getMappedOrderProducts(json["products"]));
-}
-Client getClientFromJson(Map clientjson){
-return Client.all(clientjson["idClient"],
- clientjson["clientName"], 
- clientjson["cif"],
-clientjson["commerceRegistrationNumber"],
-   clientjson["adress"],
-    clientjson["clientPhoneNumber"],
-     clientjson["longitude"],
-      clientjson["latitude"]);
-}
-List<OrderItem> getMappedOrderProducts(Iterable productsjson){
-return productsjson.map((prod) =>OrderItem.all(
-  prod["opId"],
-  getProductFromJsom(prod),
-  prod["productUnits"])).toList(); 
-}
-Product getProductFromJsom(Map json){
- 
-  return (ProductBuilder(json["product"]["productId"])
-  ..productName=json["product"]['productName']
-  ..producer=json["product"]["producerName"]
-  ..unitMeasure=json["product"]["unitMeasure"]
-  ..pricePerUnit=json["product"]["pricePerUnit"]
-  ..pricePerBox=json["product"]["pricePerBox"]
-  ..pricePerPallet=json["product"]["pricePerPallet"]
-  ..unitsPerBox=json["product"]["unitsPerBox"]
-  ..unitsPerPallet=json["product"]["unitsPerPallet"]
-  ..category=json["product"]["category"]
-  ..stock=json["product"]["stock"]
-  ..weight=json["product"]["weight"]).build();
-}
+// Future<void> readJson() async {
+//   print('call for readJson');
+//     final String response = await rootBundle.loadString('lib/data/orders.json');
+//     Iterable data = await json.decode(response);
+//      _orders=data.map((e) => Order.mapOrderFromJson(e)).toList();
+//   notifyListeners();
+// }
+
 
 void removeOrderItem(int orderItemId, int orderId)async{
-   final url=Uri.parse("http://192.168.0.103:3000/orderProducts/cancel?id=$orderItemId");
+   final url=Uri.parse("$serverUrl/orderProducts/cancel?id=$orderItemId");
         try {
       final response = await http.delete(url,
         headers: {'Authorization':'Bearer $_token'},
@@ -96,7 +53,7 @@ notifyListeners();
 }
 
   Future <dynamic> addOrder(Iterable<CartItem> items, double totalAmount, double totalWeight, int clienId) async{
-    final url=Uri.parse("http://192.168.0.103:3000/orders");
+    final url=Uri.parse("$serverUrl/orders");
     List<OrderItem> products=items.map((e) => OrderItem.custom(opProductId: e.productId,productUnits: e.quantity)).toList();
     print(products);
     final order=Order.selection(
@@ -121,14 +78,13 @@ notifyListeners();
     }
   }
 Future<dynamic> fetchOrderOfAgent(int agentId,  String date)async{
-  print('call orders fetch');
-    final url=Uri.parse("http://192.168.0.103:3000/orders/?agentId=${agentId}&date=${date}");
+    final url=Uri.parse("$serverUrl/orders/?agentId=${agentId}&date=${date}");
         try {
       final response = await http.get(url,
         headers: {'Authorization':'Bearer $_token'},
        );
       Iterable data = json.decode(response.body);
-     _orders= data.map((e) => getOrderFromJson(e)).toList();
+     _orders= data.map((e) => Order.mapOrderFromJson(e)).toList();
     if(response.statusCode==200)
     return 200;
     else
@@ -139,7 +95,7 @@ Future<dynamic> fetchOrderOfAgent(int agentId,  String date)async{
     }
 }
 Future<void> cancelOrder(int orderId) async{
-final url=Uri.parse("http://192.168.0.103:3000/orders/cancel?id=$orderId");
+final url=Uri.parse("$serverUrl/orders/cancel?id=$orderId");
         try {
       final response = await http.delete(url,
         headers: {'Authorization':'Bearer $_token'},
@@ -156,7 +112,7 @@ void removeOrderFromList(int orderId){
   notifyListeners();
 }
 Future<double> getIncome()async{
-  final url=Uri.parse("http://192.168.0.103:3000/orders/income");
+  final url=Uri.parse("$serverUrl/orders/income");
         try {
       final response = await http.get(url,
         headers: {'Authorization':'Bearer $_token'},

@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import '../model/product.dart';
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
+import '../properties.dart';
 class Products with ChangeNotifier {
   String _token;
   List<Product> _products = [];
   Products(this._token, this._products);
   List<Product> get products {
     return [..._products];
-    //return readJson();
   }
 
   Future<void> fetchAndSetProducts() async {
-    final url = Uri.parse('http://192.168.0.103:3000/products');
+    final url = Uri.parse('$serverUrl/products');
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Bearer $_token'});
@@ -28,7 +26,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url = Uri.parse("http://192.168.0.103:3000/products");
+    final url = Uri.parse("$serverUrl/products");
     try {
       final response = await http.post(
         url,
@@ -38,7 +36,6 @@ class Products with ChangeNotifier {
         },
         body: json.encode(Product.getMappedProductToJson(product)),
       );
-      //print(jsonDecode(response.body));
       final createdProduct = (ProductBuilder(jsonDecode(response.body))
             ..productName = product.productName
             ..producer = product.producer
@@ -48,6 +45,8 @@ class Products with ChangeNotifier {
             ..pricePerUnit = product.pricePerUnit
             ..pricePerBox=product.pricePerBox
             ..pricePerPallet=product.pricePerPallet
+            ..unitsPerBox=product.unitsPerBox
+            ..unitsPerPallet=product.unitsPerPallet
             ..unitMeasure = product.unitMeasure
             ..stock = product.stock
             ..weight = product.weight)
@@ -60,16 +59,9 @@ class Products with ChangeNotifier {
     }
   }
 
-  // Future<void> readJson() async {
-  //   final String response =
-  //       await rootBundle.loadString('lib/data/products.json');
-  //   Iterable data = await json.decode(response);
-  //   _products = data.map((e) => Product.getProductFromJsom(e)).toList();
-  //   notifyListeners();
-  // }
 
   Future<void> deleteProduct(int id) async {
-    final url = Uri.parse("http://192.168.0.103:3000/products/$id");
+    final url = Uri.parse("$serverUrl/products/$id");
     final existingProductIndex =
         _products.indexWhere((prod) => prod.productId == id);
     var existingProduct = _products[existingProductIndex];
@@ -93,7 +85,7 @@ class Products with ChangeNotifier {
   }
 Future<void> modifyProduct(int id, Product product)async{
   final prodIndex=_products.indexWhere((element) => element.productId==id);
-final url = Uri.parse('http://192.168.0.103:3000/products/$id');
+final url = Uri.parse('$serverUrl/products/$id');
      try {
        await http.patch(
         url,  
@@ -110,7 +102,7 @@ final url = Uri.parse('http://192.168.0.103:3000/products/$id');
 
 }
 Future<List<Product>> getTopProducts()async{
-final url = Uri.parse('http://192.168.0.103:3000/products/top');
+final url = Uri.parse('$serverUrl/products/top');
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Bearer $_token'});
@@ -120,7 +112,5 @@ final url = Uri.parse('http://192.168.0.103:3000/products/top');
     } catch (error) {
       throw (error);
     }
-}
-//functii de get,delete,update,post from api
-  
+} 
 }

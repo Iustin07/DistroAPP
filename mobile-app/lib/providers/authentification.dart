@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import '../properties.dart';
 class Authentication with ChangeNotifier{
 String? _token;
 DateTime? _expiryDate;
@@ -32,7 +33,7 @@ int get userId{
   return _userid as int;
 }
 Future<void> _authenticate(String username, String password) async{
-final url=Uri.parse('http://192.168.0.103:3000/authenticate');
+final url=Uri.parse('$serverUrl/authenticate');
 print('${username} ${password}');
 print(json.encode({
   'userName':username.toString(),

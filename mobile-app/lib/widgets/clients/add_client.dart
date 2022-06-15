@@ -1,3 +1,5 @@
+import 'package:distroapp/widgets/simple_app_bat.dart';
+
 import './add_client_form.dart';
 import 'package:flutter/material.dart';
 class AddClientScreen extends StatelessWidget {
@@ -7,12 +9,7 @@ static const routeName="/add-client";
   Widget build(BuildContext context) {
     return Scaffold(
        backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop()),
-        title: Text('Add Client'),
-      ),
+      appBar:SimpleAppBar(title: 'Add Client',),
       body: AddClientForm(),
     );
   }

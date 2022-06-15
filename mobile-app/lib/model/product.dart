@@ -17,14 +17,14 @@ get getproductId{
   return productId;
 }
 get priceChoice{
-  if(unitMeasure=='Buc')
-  return pricePerUnit;
-  if(unitMeasure=='Box')
-  return pricePerBox;
-  if(unitMeasure=='Nav')
-  return pricePerBox;
-  if(unitMeasure=='But')
-  return pricePerUnit;
+  if(unitMeasure=='Buc'){
+  return pricePerUnit;}
+  if(unitMeasure=='Box'){
+  return pricePerBox;}
+  if(unitMeasure=='Nav'){
+  return pricePerBox;}
+  if(unitMeasure=='But'){
+  return pricePerUnit;}
   
 
 }

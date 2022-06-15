@@ -49,10 +49,10 @@ class _ClientsListState extends State<ClientsList> {
   }
   @override
   Widget build(BuildContext context) {
-    return _isLoading? Center(child: CircularProgressIndicator(),):SingleChildScrollView(
-         child: Container(
+    return _isLoading? const Center(child: CircularProgressIndicator(),):SingleChildScrollView(
+         child: SizedBox(
           height: MediaQuery.of(context).size.height*0.8,
-         child:_clients.isEmpty?Center(child: Text('there are no clients loaded yet'),) :ListView.builder(
+         child:_clients.isEmpty?const Center(child: Text('there are no clients loaded yet'),) :ListView.builder(
        itemCount: _clients.length,
        itemBuilder: (ctx,index)=>widget.enabled?ClientItem(key:ValueKey(_clients[index].id.toString()),client:_clients[index],waiting:false):
        ClientItem(key:ValueKey(_clients[index].id.toString()),client:_clients[index],waiting:true),

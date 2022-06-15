@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/grid_item.dart';
 import '../screens/storeman_screens/manage_losts_screen.dart';
 import '../screens/storeman_screens/shipping_screen.dart';
+import '../screens/handler_screens/see_centralizers_screen.dart';
 class StoremanHome extends StatelessWidget {
   const StoremanHome({Key? key}) : super(key: key);
 
@@ -29,7 +30,7 @@ class StoremanHome extends StatelessWidget {
           color: const Color.fromARGB(255, 244, 208, 111),
           iconp: const IconData(0xf472,
               fontFamily: 'CupertinoIcons', fontPackage: 'cupertino_icons'),
-          onTapHandler: () {},
+          onTapHandler: ()=>Navigator.of(context).pushNamed(CentralizersScreen.routeName),
         ),
       ],
     );

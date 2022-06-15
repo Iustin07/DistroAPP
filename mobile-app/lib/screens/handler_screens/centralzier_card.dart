@@ -45,8 +45,8 @@ class CentralizerCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Text('Value: ${value} Ron'),
-                        Text('weight: ${weight} kg'),
+                        Text('Value: ${value.toStringAsFixed(2)} Ron'),
+                        Text('weight: ${weight.toStringAsFixed(2)} kg'),
                       
                       ],
                     )

@@ -17,22 +17,22 @@ static const routeName='/home';
  Widget _buildChild(){
  switch(role){
    case 'accountant':
-     return AccountantHome();
+     return const AccountantHome();
    case 'manager':
-   return ManagerHome();
+   return const ManagerHome();
     case 'agent':
-   return AgentHome();
+   return const AgentHome();
    case 'handler':
-   return HandlerHome();
+   return const  HandlerHome();
    case 'driver':
-   return DriverHome();
+   return const DriverHome();
    case 'storeman':
-   return StoremanHome();
+   return const StoremanHome();
    default:
    return Container(
-     child: Center(child:  Text('this role does not exist')),
+     child: const Center(child:  Text('this role does not exist')),
    );
-   break;
+
  }
  }
   @override

@@ -71,8 +71,14 @@ bool _init=true;
                 children: <Widget>[
                   Text('${index+1}'),
                   Text('${summar![index].productName}'),
-                  Text('${summar![index].quantity}'),
-                  Text('${summar![index].measureUnit}')
+                  Column(
+                    children: <Widget>[
+                       Text('${summar![index].divider.palletQuantity} pal'),
+                  Text('${summar![index].divider.boxQuantiy} boxes'),
+                  Text('${summar![index].divider.bucQuantity} buc'),
+                    ],
+                  )
+                 
                 ],),
             )),
         ),

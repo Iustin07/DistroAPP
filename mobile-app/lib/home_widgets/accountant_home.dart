@@ -5,6 +5,7 @@ import '../screens/manage_employees_screen.dart';
 import '../screens/manage_products.dart';
 import'package:flutter/material.dart';
 import '../widgets/grid_item.dart';
+import '../screens/storeman_screens/shipping_screen.dart';
 class AccountantHome extends StatefulWidget {
  const  AccountantHome({Key? key}) : super(key: key);
 
@@ -45,12 +46,12 @@ class _AccountantHomeState extends State<AccountantHome> {
                itemTitle: 'Shipping',
                color:const Color.fromARGB(255,179,233,199),
             iconp: Icons.local_shipping,
-            onTapHandler: (){}),
+            onTapHandler: ()=>Navigator.of(context).pushNamed(ShippingScreen.routeName)),
      GridItem(
                itemTitle: 'Manage clients',
                color:const Color.fromARGB(255,250,250,255),
             iconp: Icons.business_center,
-            // onTapHandler: ()=>Navigator.of(context).pushNamed(ManageClientsScreen.routeName),
+         
             onTapHandler: ()=>Navigator.of(context).pushNamed(ManageClientsScreen.routeName),
      ),
          ],

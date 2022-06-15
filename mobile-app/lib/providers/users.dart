@@ -1,12 +1,11 @@
+import 'package:distroapp/properties.dart';
+
 import '../model/employe.dart';
 import 'package:flutter/material.dart';
 import '../model/custom_employe.dart';
-import '../model/employe.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import'dart:convert';
-import '../model/employe.dart';
-  import '../model/httpexception.dart';
+import '../model/httpexception.dart';
 class Users with ChangeNotifier{
   String _token;
   Users(this._token);
@@ -15,7 +14,7 @@ class Users with ChangeNotifier{
     return [... _allEmployee];
   }
     Future<void> fetchCustomEmployee() async {
-    final url = Uri.parse('http://192.168.0.103:3000/users/all');
+    final url = Uri.parse('$serverUrl/users/all');
     try {
       final response = await http.get(url,
       headers: {'Authorization': 'Bearer $_token'});
@@ -30,13 +29,11 @@ class Users with ChangeNotifier{
     return CustomEmployee(json["userId"],json["username"]);
   }
   Future<Employee> findEmployeeById(int id)async{
-    print('find by id called');
-final url = Uri.parse('http://192.168.0.103:3000/users/$id');
+final url = Uri.parse('h$serverUrl/users/$id');
     try {
       final response = await http.get(url,
       headers: {'Authorization': 'Bearer $_token'});
       var data=json.decode(response.body);
-      print(response.body);
       notifyListeners();
       return Employee.mapJsonToEmployee(data);
   
@@ -45,7 +42,7 @@ final url = Uri.parse('http://192.168.0.103:3000/users/$id');
     }
   }
   Future <void> addEmploye(Map datajson) async{
-    final url=Uri.parse("http://192.168.0.103:3000/users");
+    final url=Uri.parse("$serverUrl/users");
         try {
       final response = await http.post(
         url,
@@ -61,7 +58,7 @@ final url = Uri.parse('http://192.168.0.103:3000/users/$id');
     }
   }
   Future<void> updateEmployee(int id,String address, String phoneNumber,double salary,String driverLicense) async{
-    final url = Uri.parse('http://192.168.0.103:3000/users/$id');
+    final url = Uri.parse('$serverUrl/users/$id');
      try {
        await http.patch(
         url,
@@ -81,7 +78,7 @@ final url = Uri.parse('http://192.168.0.103:3000/users/$id');
     }
   }
     Future<void> deleteEmploye(int id) async {
-    final url = Uri.parse('http://192.168.0.103:3000/users/$id');
+    final url = Uri.parse('$serverUrl/users/$id');
     final employ=_allEmployee.firstWhere((element) => element.employeeId==id);
     _allEmployee.removeWhere((element) => element.employeeId==id);
     notifyListeners();
@@ -97,7 +94,7 @@ final url = Uri.parse('http://192.168.0.103:3000/users/$id');
   }
 
 Future<dynamic> resetPasswordRequest(Map jsondata) async{
-final url=Uri.parse("http://192.168.0.103:3000/users/reset");
+final url=Uri.parse("$serverUrl/users/reset");
 final response=await http.patch(url,
 headers: {'Content-type': 'application/json',
   'Authorization':'Bearer $_token'},
@@ -113,7 +110,7 @@ if(response.statusCode==200){
 }
 
 Future<List<CustomEmployee>> getSpecificRequest(String role) async {
-    final url = Uri.parse('http://192.168.0.103:3000/users/custom?role=$role');
+    final url = Uri.parse('$serverUrl/users/custom?role=$role');
     try {
       final response = await http.get(url,
       headers: {'Authorization': 'Bearer $_token'});
@@ -125,7 +122,7 @@ Future<List<CustomEmployee>> getSpecificRequest(String role) async {
     
   }
 Future<double> getWages()async{
-  final url = Uri.parse('http://192.168.0.103:3000/users/wage');
+  final url = Uri.parse('$serverUrl/users/wage');
     try {
       final response = await http.get(url,
       headers: {'Authorization': 'Bearer $_token'});
