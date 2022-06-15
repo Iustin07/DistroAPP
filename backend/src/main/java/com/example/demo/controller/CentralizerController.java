@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -37,7 +38,10 @@ public class CentralizerController {
                        @Valid @RequestBody CentralizersUpdateVO vO) {
         centralizerService.update(id, vO);
     }
-
+    @GetMapping("/driver")
+    public List<CentralizerDTO> getByDateAndDriver(@RequestParam("date")String date, HttpServletRequest httpServletRequest){
+        return centralizerService.getByDateAndDriver(date,httpServletRequest);
+    }
     @GetMapping("/{id}")
     public CentralizerDTO getById(@Valid @NotNull @PathVariable("id") Long id) {
         return centralizerService.getById(id);

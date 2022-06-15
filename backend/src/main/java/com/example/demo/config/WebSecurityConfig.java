@@ -82,10 +82,12 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                         authorizeRequests().
                 antMatchers("users","/users**").hasAnyAuthority("accountant","manage","agent")
                 .antMatchers("/clients").hasAnyAuthority("manager","accountant","agent")
-                .antMatchers("/products").hasAnyAuthority("accountant","manager","agent")
+                .antMatchers("/products").hasAnyAuthority("accountant","manager","agent","storeman")
                 .antMatchers("/orders","/orders**","/orderProducts").hasAnyAuthority("accountant", "agent")
                 .antMatchers("/orders/income","/products/top").hasAnyAuthority("manager")
-                .antMatchers("/centralizers/all").hasAnyAuthority("handler")
+                .antMatchers("/centralizers/all").hasAnyAuthority("handler","storeman")
+                .antMatchers("/loses").hasAnyAuthority("storeman","manager")
+                .antMatchers("/transports","/productsshipping").hasAnyAuthority("accountant","storeman")
                 .antMatchers("/authenticate").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().

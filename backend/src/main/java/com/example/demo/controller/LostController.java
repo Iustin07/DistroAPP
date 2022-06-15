@@ -10,8 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Validated
 @RestController
@@ -22,8 +24,9 @@ public class  LostController {
     private LostService lostService;
 
     @PostMapping
-    public String save(@Valid @RequestBody LostVO vO) {
-        return lostService.save(vO).toString();
+    public String save(@Valid @RequestBody LostVO vO,
+                       HttpServletRequest httpServletRequest) {
+        return lostService.save(vO,httpServletRequest).toString();
     }
 
     @DeleteMapping("/{id}")
@@ -36,7 +39,14 @@ public class  LostController {
                        @Valid @RequestBody LostUpdateVO vO) {
         lostService.update(id, vO);
     }
-
+    @GetMapping("/specific")
+    public List<LostDTO> getAllSpecific(HttpServletRequest httpServletRequest){
+        return  lostService.getThisMonth(httpServletRequest);
+    }
+    @GetMapping("/all")
+    public List<LostDTO> getAll(@RequestParam("firstDate")String firstDate, @RequestParam("secondDate") String secondDate){
+        return  lostService.getAllBetweenDates(firstDate,secondDate);
+    }
     @GetMapping("/{id}")
     public LostDTO getById(@Valid @NotNull @PathVariable("id") Long id) {
         return lostService.getById(id);

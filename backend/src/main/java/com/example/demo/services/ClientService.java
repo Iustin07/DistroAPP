@@ -42,6 +42,8 @@ public class ClientService {
     }
 
     public void delete(Long id) {
+
+        //updateEnable(id);
         clientRepository.deleteById(id);
     }
 

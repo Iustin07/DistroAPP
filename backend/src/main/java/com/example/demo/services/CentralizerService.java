@@ -1,9 +1,11 @@
 package com.example.demo.services;
 
+import com.example.demo.config.JwtTokenUtil;
 import com.example.demo.dto.CentralizerDTO;
 import com.example.demo.model.CentralizerOrders;
 import com.example.demo.model.Centralizer;
 import com.example.demo.model.CustomCentralizer;
+import com.example.demo.model.User;
 import com.example.demo.repository.CentralizerRepository;
 import com.example.demo.repository.CustomRepository;
 import com.example.demo.vo.CentralizersQueryVO;
@@ -11,9 +13,13 @@ import com.example.demo.vo.CentralizersUpdateVO;
 import com.example.demo.vo.CentralizersVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -28,11 +34,13 @@ public class CentralizerService {
     private CustomRepository customRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @Transactional
     public Long save(CentralizersVO vO) {
         Centralizer bean = new Centralizer();
         BeanUtils.copyProperties(vO, bean);
-        bean.setDriver(userService.requireOne(vO.getDeliverDriver()));
+        //bean.setDriver(userService.requireOne(vO.getDeliverDriver()));
         for (Long orderId : vO.getOrdersIds()) {
             bean.addOrder(new CentralizerOrders().setOrder(orderService.requireOne(orderId)));
         }
@@ -69,12 +77,25 @@ public class CentralizerService {
     private CentralizerDTO toDTO(Centralizer original) {
         CentralizerDTO bean = new CentralizerDTO();
         BeanUtils.copyProperties(original, bean);
-        bean.setDriverName(original.getDriver().getUsername());
+        //bean.setDriverName(original.getDriver().getUsername());
+        bean.setDriverName(userService.requireOne(original.getDeliverDriver()).getUsername());
         return bean;
     }
 
     private Centralizer requireOne(Long id) {
         return centralizersRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+    }
+
+    public List<CentralizerDTO> getByDateAndDriver(String date, HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("Authorization");
+        token = token.substring(6);
+        String userRole = jwtTokenUtil.getRoleFromToken(token);
+        if(userRole.equals("driver")){
+                Long driverId=jwtTokenUtil.getIdFromToken(token);
+               return centralizersRepository.findAllByCreationDateAndDeliverDriver(LocalDate.parse(date),driverId)
+                       .stream().map(centralizer->toDTO(centralizer)).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }

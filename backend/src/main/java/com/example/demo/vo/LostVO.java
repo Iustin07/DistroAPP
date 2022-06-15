@@ -11,14 +11,12 @@ import java.time.LocalDate;
 public class LostVO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
-
-    @NotNull(message = "responsableId can not null")
     private Long responsableId;
 
     @NotNull(message = "productId can not null")
     private Long productId;
-
-    private Long quantity;
+    @NotNull(message = "quantity can not be null")
+    private double quantity;
 
     private LocalDate dateOfLost;
 

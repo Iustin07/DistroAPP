@@ -1,8 +1,13 @@
 package com.example.demo.repository;
 
+import com.example.demo.dto.CentralizerDTO;
 import com.example.demo.model.Centralizer;
+import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface CentralizerRepository extends JpaRepository<Centralizer, Long>, JpaSpecificationExecutor<Centralizer> {
 //    @Query(value = "select new CustomCentralizer(p.product_name as productName, sum(op.product_units) as quantity, p.unit_measure as measureUnit)  from products as p join order_products as op on p.product_id=op.op_product_id \n" +
@@ -24,4 +29,5 @@ public interface CentralizerRepository extends JpaRepository<Centralizer, Long>,
 //            }
 //    ))
 //    List<CustomCentralizer> getSummarizeCentralizer(@Param("id") Long id);
+    List<Centralizer> findAllByCreationDateAndDeliverDriver(LocalDate date, Long driverId);
 }

@@ -1,9 +1,12 @@
 package com.example.demo.services;
 
 import com.example.demo.model.CustomCentralizer;
+import com.example.demo.model.DividerObject;
+import com.example.demo.model.Product;
 import com.example.demo.repository.CustomRepository;
 import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.hibernate.query.internal.NativeQueryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -18,12 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomServiceImpl implements CustomRepository {
-String querySql="select p.product_name as productName, sum(op.product_units) as quantity, p.unit_measure as measureUnit  from products as p join order_products as op on p.product_id=op.op_product_id " +
+
+String querySql="select p.product_name, sum(op.product_units) as quantity,p.units_per_box,units_per_pallet,p.unit_measure  from products as p join order_products as op on p.product_id=op.op_product_id " +
         "where op.op_order_id in ( select co.order_id from centralizers as c join centralizer_orders as co on co.centralizer_id=c.id where c.id=:id ) "+
-        "group by op_product_id,p.product_name,p.unit_measure";
+        "group by op_product_id,p.product_name,p.units_per_box,p.units_per_pallet,p.unit_measure";
     @PersistenceContext
     private EntityManager entityManager;
-
     @Override
     public List<CustomCentralizer> getSummarizeCentralizer(Long id) {
         Query query =entityManager.createNativeQuery(querySql).setParameter("id",id);
@@ -32,8 +35,17 @@ String querySql="select p.product_name as productName, sum(op.product_units) as 
         Iterator it = records.iterator( );
 
         while (it.hasNext( )) {
-            Object[] result = (Object[])it.next(); // Iterating through array object
-            summarList.add(new CustomCentralizer(result[0].toString(),Long.parseLong(String.valueOf(result[1])),result[2].toString()));
+            Object[] result = (Object[])it.next();
+            String productName=String.valueOf(result[0]);
+            int sumQuantity=Integer.parseInt(String.valueOf(result[1]));
+            int unitsPerPallet=Integer.parseInt(String.valueOf(result[2]));
+            int unitsPerBox=Integer.parseInt(String.valueOf(result[3]));
+            String unitMeasure=String.valueOf(result[4]);
+            // Iterating through array object
+            summarList.add(new CustomCentralizer(
+                    productName,
+                    calculateDivider(sumQuantity,unitsPerBox,unitsPerPallet,unitMeasure)
+            ));
             //userRecords.add(new CustomCentralizer(result[0], result[1], result[2]));
 
         }
@@ -58,5 +70,38 @@ String querySql="select p.product_name as productName, sum(op.product_units) as 
         return  records.stream()
                 .mapToLong(Integer::longValue)
                 .boxed().collect(Collectors.toList());
+    }
+
+    private DividerObject calculateDivider(int quantity,int unitsPerPallet,int unitsPerBox, String unitMeasure){
+        int palletResume=0;
+        int boxResume=0;
+        switch(unitMeasure){
+            case "Buc":
+                if(quantity>=unitsPerPallet){
+                    palletResume=quantity/unitsPerPallet;
+                quantity-=palletResume*unitsPerPallet;
+                }
+                if(quantity>=unitsPerBox){
+                    boxResume=quantity/unitsPerBox;
+                    quantity-=boxResume*unitsPerBox;
+                }
+                if(quantity<0)
+                    quantity=0;
+                return  new DividerObject(palletResume,boxResume,quantity);
+            case "Box":
+                quantity=quantity*unitsPerBox;
+                if(quantity>=unitsPerPallet){
+                    palletResume=quantity/unitsPerPallet;
+                    quantity-=palletResume*unitsPerPallet;
+                }
+                if(quantity>=unitsPerBox){
+                    boxResume=quantity/unitsPerBox;
+                    quantity-=boxResume*unitsPerBox;
+                }
+                if(quantity<0)
+                    quantity=0;
+                return  new DividerObject(palletResume,boxResume,quantity);
+        }
+        return new DividerObject(0,0,0);
     }
 }

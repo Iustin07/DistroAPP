@@ -104,7 +104,7 @@ public class UserService {
         throw new UnsupportedOperationException();
     }
 
-    private UserDTO toDTO(User original) {
+    public UserDTO toDTO(User original) {
         UserDTO bean = new UserDTO();
         BeanUtils.copyProperties(original, bean);
         bean.setUserRole(original.getRole().getName());

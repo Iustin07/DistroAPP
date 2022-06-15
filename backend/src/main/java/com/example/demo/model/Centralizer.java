@@ -28,9 +28,11 @@ public class Centralizer implements Serializable {
 
     @Column(name = "creation_date",insertable = false)
     private LocalDate creationDate;
-    @OneToOne
-    @JoinColumn(name="deliver_driver", referencedColumnName = "user_id")
-    private User driver;
+    @Column(name="deliver_driver")
+    private Long deliverDriver;
+//    @OneToOne
+//    @JoinColumn(name="deliver_driver", referencedColumnName = "user_id")
+//    private User driver;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="centralizer_id")
     private List<CentralizerOrders> orders=new ArrayList<>();

@@ -5,16 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
+
 @AllArgsConstructor
 @JsonSerializableSchema
 @Data
 @NoArgsConstructor
-public class CustomCentralizer  implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String productName;
-    private DividerObject summar;
-
-}
+public class DividerObject implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private int palletQuantity;
+        private int boxQuantiy;
+        private int bucQuantity;
+    }
 

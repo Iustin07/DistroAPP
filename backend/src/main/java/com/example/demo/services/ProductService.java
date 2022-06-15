@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ public class ProductService {
     @Autowired
     private CustomRepository customRepository;
     public Long save(ProductsVO vO) {
+
         Product bean = new Product();
         BeanUtils.copyProperties(vO, bean);
         bean = productRepository.save(bean);
@@ -67,7 +69,7 @@ public class ProductService {
         throw new UnsupportedOperationException();
     }
 
-    private ProductDTO toDTO(Product original) {
+    public ProductDTO toDTO(Product original) {
         ProductDTO bean = new ProductDTO();
         BeanUtils.copyProperties(original, bean);
         return bean;
@@ -75,7 +77,7 @@ public class ProductService {
     public List<ProductDTO> getTopFive(){
         return customRepository.topFiveProducts().stream().map(id->toDTO(requireOne(id))).collect(Collectors.toList());
     }
-    private Product requireOne(Long id) {
+    public Product requireOne(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
     }

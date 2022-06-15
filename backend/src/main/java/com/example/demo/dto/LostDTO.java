@@ -10,9 +10,9 @@ import java.time.LocalDate;
 public class LostDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
-    private ProductDTO productDTO;
-    private UserDTO user;
-    private Long quantity;
+    private ProductDTO product;
+    private String responsableName;
+    private double quantity;
     private LocalDate dateOfLost;
 
 }
