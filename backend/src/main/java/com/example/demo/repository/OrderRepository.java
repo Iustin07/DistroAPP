@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
     List<Order> findAllByOrderSellerAgentAndAndOrderData(Long orderSellerAgent, LocalDate orderData);
+    List<Order> findAllByOrderData(LocalDate date);
 }

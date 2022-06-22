@@ -1,18 +1,21 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CentralizerDTO;
+import com.example.demo.model.Centralizer;
 import com.example.demo.model.CustomCentralizer;
 import com.example.demo.services.CentralizerService;
 import com.example.demo.vo.CentralizersQueryVO;
 import com.example.demo.vo.CentralizersUpdateVO;
 import com.example.demo.vo.CentralizersVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
 @Validated
@@ -53,6 +56,15 @@ public class CentralizerController {
     @GetMapping("/summarize/{id}")
     public List<CustomCentralizer> getSummarize(@Valid @NotNull @PathVariable("id") Long id){
         return centralizerService.getSummarize(id);
+    }
+    @PostMapping("/generate")
+    ResponseEntity<Object> generateCentralizers(@RequestParam("date")String date){
+        return centralizerService.getGeneratedCentralizers(date);
+    }
+    @GetMapping("specific")
+    List<CentralizerDTO> getByDate(@RequestParam("date")String date){
+        LocalDate convertedDate=LocalDate.parse(date);
+        return centralizerService.getBydate(convertedDate);
     }
     @GetMapping
     public List<CentralizerDTO> query(@Valid CentralizersQueryVO vO) {

@@ -5,6 +5,7 @@ import com.example.demo.model.JwtRequest;
 import com.example.demo.model.JwtResponse;
 import com.example.demo.utils.MyUserDetails;
 import com.example.demo.utils.UserDetailsServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
+@Slf4j
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -28,14 +30,10 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        System.out.println("authentication controller called");
-        System.out.println(authenticationRequest.getUserName()+" "+authenticationRequest.getUserPassword());
-        authenticate(authenticationRequest.getUserName(), authenticationRequest.getUserPassword());
-
+       log.info("Authentification for user "+authenticationRequest.getUserName());
+        authenticate(authenticationRequest.getUserName(),authenticationRequest.getUserPassword());
         final MyUserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserName());
-        //System.out.println("user is "+userDetails.getUsername()+" "+userDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        //System.out.println(token);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 

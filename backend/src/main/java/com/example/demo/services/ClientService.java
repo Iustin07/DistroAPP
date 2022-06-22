@@ -36,15 +36,15 @@ public class ClientService {
         }
         if(userRole.equals("agent"))
             bean.setEnabled(false);
-        System.out.println("save clients save by "+userRole);
         bean = clientRepository.save(bean);
         return bean.getIdClient();
     }
 
     public void delete(Long id) {
-
-        //updateEnable(id);
-        clientRepository.deleteById(id);
+        Client original = requireOne(id);
+        original.setEnabled(false).setDeleted(true);
+        clientRepository.save(original);
+        //clientRepository.deleteById(id);
     }
 
     public void update(Long id, ClientsUpdateVO vO) {
@@ -61,7 +61,7 @@ public class ClientService {
       return   clientRepository.findAll().stream().map(element->toDTO(element)).collect(Collectors.toList());
     }
     public List<ClientDTO> getAllEnabled(boolean enabled){
-        return  clientRepository.findAllByEnabled(enabled).stream().map(element->toDTO(element)).collect(Collectors.toList());
+        return  clientRepository.findAllByEnabledAndDeleted(enabled,false).stream().map(element->toDTO(element)).collect(Collectors.toList());
     }
     public void updateEnable(Long id){
         Client original = requireOne(id);

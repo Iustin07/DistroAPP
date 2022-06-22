@@ -43,5 +43,8 @@ public class Client implements Serializable {
     @JsonIgnore
     @Column(name = "client_enable")
     private boolean enabled;
+    @JsonIgnore
+    @Column(name = "deleted")
+    private boolean deleted;
 
 }

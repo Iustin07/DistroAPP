@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -53,6 +54,10 @@ public class OrderController {
     @GetMapping("/income")
     public double getIncome(){
         return orderService.retrieveIncome();
+    }
+    @GetMapping("/anual")
+    public Map<String, Double> getAnualStats(){
+        return orderService.anulStats();
     }
     @GetMapping
     public Page<OrderDTO> query(@Valid OrdersQueryVO vO) {

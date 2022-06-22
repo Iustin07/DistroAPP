@@ -2,38 +2,37 @@ package com.example.demo.services;
 
 import com.example.demo.model.CustomCentralizer;
 import com.example.demo.model.DividerObject;
-import com.example.demo.model.Product;
+
 import com.example.demo.repository.CustomRepository;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
-import org.hibernate.query.internal.NativeQueryImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.modelmapper.internal.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
+
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CustomServiceImpl implements CustomRepository {
-
-String querySql="select p.product_name, sum(op.product_units) as quantity,p.units_per_box,units_per_pallet,p.unit_measure  from products as p join order_products as op on p.product_id=op.op_product_id " +
-        "where op.op_order_id in ( select co.order_id from centralizers as c join centralizer_orders as co on co.centralizer_id=c.id where c.id=:id ) "+
-        "group by op_product_id,p.product_name,p.units_per_box,p.units_per_pallet,p.unit_measure";
     @PersistenceContext
     private EntityManager entityManager;
+String querySql="select p.product_name, sum(op.product_units) as quantity,p.units_per_box," +
+        "units_per_pallet,p.unit_measure  " +
+        "from products as p join order_products as op on p.product_id=op.op_product_id " +
+        "where op.op_order_id in ( select co.order_id from centralizers as c join centralizer_orders as co on " +
+        "co.centralizer_id=c.id where c.id=:id ) "+
+        "group by op_product_id,p.product_name,p.units_per_box,p.units_per_pallet,p.unit_measure";
     @Override
     public List<CustomCentralizer> getSummarizeCentralizer(Long id) {
         Query query =entityManager.createNativeQuery(querySql).setParameter("id",id);
         List<CustomCentralizer> summarList=new ArrayList<>();
         List<CustomCentralizer> records=query.getResultList();
         Iterator it = records.iterator( );
-
         while (it.hasNext( )) {
             Object[] result = (Object[])it.next();
             String productName=String.valueOf(result[0]);
@@ -70,6 +69,26 @@ String querySql="select p.product_name, sum(op.product_units) as quantity,p.unit
         return  records.stream()
                 .mapToLong(Integer::longValue)
                 .boxed().collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Double> getAnulStats() {
+        String querySql="select to_char(date_trunc('month',order_data),'month'), sum(order_payment_value) from  orders  " +
+                "where extract(year from order_data)=extract(year from current_date) group by 1;";
+        Map<String, Double> mapAnualStats = Stream.of(new String[]{
+                "january", "february","march","april","may","june","july","august","september","october","november","december"
+        }).collect(Collectors.toMap(data -> data, data ->new Double(0)));
+        Query query=entityManager.createNativeQuery(querySql);
+        List<Pair<String,Integer>> records=query.getResultList();
+        Iterator it = records.iterator( );
+        while (it.hasNext( )) {
+            Object[] result = (Object[])it.next();
+            String month=String.valueOf(result[0]);
+            double value=Double.parseDouble(String.valueOf(result[1]));
+            mapAnualStats.put(month.trim(),value);
+        }
+
+    return  new TreeMap<String, Double>(mapAnualStats);
     }
 
     private DividerObject calculateDivider(int quantity,int unitsPerPallet,int unitsPerBox, String unitMeasure){

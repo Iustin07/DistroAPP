@@ -84,19 +84,15 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/clients").hasAnyAuthority("manager","accountant","agent")
                 .antMatchers("/products").hasAnyAuthority("accountant","manager","agent","storeman")
                 .antMatchers("/orders","/orders**","/orderProducts").hasAnyAuthority("accountant", "agent")
-                .antMatchers("/orders/income","/products/top").hasAnyAuthority("manager")
+                .antMatchers("/orders/income","/products/top","/orders/anual").hasAnyAuthority("manager")
                 .antMatchers("/centralizers/all").hasAnyAuthority("handler","storeman")
                 .antMatchers("/loses").hasAnyAuthority("storeman","manager")
                 .antMatchers("/transports","/productsshipping").hasAnyAuthority("accountant","storeman")
                 .antMatchers("/authenticate").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
-
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

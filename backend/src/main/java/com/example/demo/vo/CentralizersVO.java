@@ -18,4 +18,9 @@ public class CentralizersVO implements Serializable {
     @NotNull(message = "deliverDriver can not null")
     private Long deliverDriver;
     private List<Long> ordersIds=new ArrayList<>();
+    public  CentralizersVO(){}
+    public CentralizersVO(Long deliverDriver,List<Long> ordersIds){
+        this.deliverDriver=deliverDriver;
+        this.ordersIds=ordersIds;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.services;
 import com.example.demo.config.JwtTokenUtil;
 import com.example.demo.dto.OrderDTO;
+import com.example.demo.model.KmeanOrder;
 import com.example.demo.model.OrderProducts;
 import com.example.demo.model.Order;
 import com.example.demo.model.Product;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -98,7 +100,15 @@ public class OrderService {
         //bean.setProducts(original.getProducts());
         return bean;
     }
+    public List<KmeanOrder> getAll(LocalDate date){
+        return orderRepository.findAllByOrderData(date).stream().
+                map(order->new KmeanOrder(
+                        order.getOrderId(),
+                        order.getClient().getLatitude(),
+                        order.getClient().getLongitude()
+                )).collect(Collectors.toList());
 
+    }
     public Order requireOne(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
@@ -109,5 +119,7 @@ public class OrderService {
     }
     public double retrieveIncome(){
         return customRepository.getIncome();
+    }
+    public Map<String,Double> anulStats(){return customRepository.getAnulStats();
     }
 }

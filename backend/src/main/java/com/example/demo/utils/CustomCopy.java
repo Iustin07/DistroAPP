@@ -21,8 +21,6 @@ public class CustomCopy {
         String[] result = new String[emptyNames.size()];
         return emptyNames.toArray(result);
     }
-
-    // then use Spring BeanUtils to copy and ignore null using our function
     public static void myCopyProperties(Object src, Object target) {
         BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
     }

@@ -34,12 +34,17 @@ public class UserService {
         User bean = new User();
         BeanUtils.copyProperties(vO, bean);
         bean.setRole(roleService.convertToEntity(roleService.getByName(vO.getUserRole())));
+        bean.setEnabled(new Long(1));
         bean = usersRepository.save(bean);
         return bean.getUserId();
     }
 
     public void delete(Long id) {
-        usersRepository.deleteById(id);
+
+        User user=requireOne(id);
+        user.setEnabled(new Long(0));
+        usersRepository.save(user);
+        //usersRepository.deleteById(id);
     }
 
     public ResponseEntity<Object> changePaswword(Password passwords, HttpServletRequest httpServletRequest) {
@@ -50,29 +55,15 @@ public class UserService {
         if (foundUser.isEmpty()) {
             return new ResponseEntity<>("User not found for changing passwords", HttpStatus.BAD_REQUEST);
         }
-//        if(foundUser.get().getUserId()==3){
-//            return  new ResponseEntity<>("can't do this operaion on this user", HttpStatus.FORBIDDEN);
-//        }
+
         User bean = new User();
         BeanUtils.copyProperties(foundUser.get(), bean);
         bean.setPasswordHash(getEncodePassword(passwords.getNewPassword()));
         bean.setRole(roleService.convertToEntity(roleService.getByName(foundUser.get().getUserRole())));
         usersRepository.save(bean);
         return new ResponseEntity<>(HttpStatus.OK);
-    //}
-//        else{
-//            //throw new PasswordDoNotMatch("Passwords do not match");
-//            return  new ResponseEntity<>("Password do not match",HttpStatus.NOT_MODIFIED);
-//        }
-
-
     }
     public void update(Long id, UsersUpdateVO vO) {
-//        Users bean=new Users();
-//        Users foundUser=requireOne(id);
-//        bean.setUserId(foundUser.getUserId());
-//        bean.setCreatedOn(foundUser.getCreatedOn());
-
         /**de adaigat alte campuri if needed*/
         User bean=requireOne(id);
         System.out.println("user id is "+bean.getUserId());
@@ -96,7 +87,6 @@ public class UserService {
         User original = requireOne(id);
         System.out.println(original.getRole().getRoleId());
         System.out.println(original.getRole().getName());
-        //System.out.println(original.toString());
         return toDTO(original);
     }
 

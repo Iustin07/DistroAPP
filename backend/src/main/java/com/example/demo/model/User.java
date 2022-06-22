@@ -44,7 +44,7 @@ public class User implements Serializable {
     @Column(name = "driver_license")
     private String driverLicense;
     @JsonIgnore
-    @Column(name = "enabled",insertable = false)
+    @Column(name = "enabled")
     private Long enabled;
 
     @Override
