@@ -1,12 +1,8 @@
-import 'package:distroapp/widgets/employee/employe_details_body.dart';
-
-import '../../providers/users.dart';
-import 'package:distroapp/model/employe.dart';
+import './employe_details_body.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'dart:math';
+
 class EmployeeDetailsScreen extends StatefulWidget {
-  EmployeeDetailsScreen({Key? key}) : super(key: key);
+const  EmployeeDetailsScreen({Key? key}) : super(key: key);
   static const routeName = "/employee-show";
   @override
   State<EmployeeDetailsScreen> createState() => _EmployeeDetailsScreenState();
@@ -19,13 +15,12 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     final employeeId=ModalRoute.of(context)!.settings.arguments;
-    print('employye id from escreen ${employeeId}');
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop()),
-        title: Text('Employe details'),
+        title: const Text('Employe details'),
       ),
       body: Container(
         height: deviceHeight,

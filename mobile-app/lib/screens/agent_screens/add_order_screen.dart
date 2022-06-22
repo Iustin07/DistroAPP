@@ -1,10 +1,9 @@
 import 'package:badges/badges.dart';
-import 'package:distroapp/widgets/simple_app_bat.dart';
-
-import '../../screens/cart_screen.dart';
-import '../../widgets/orders/order_products_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../widgets/simple_app_bat.dart';
+import '../../screens/cart_screen.dart';
+import '../../widgets/orders/order_products_list.dart';
 import '../../model/cart.dart';
 
 class AddOrderScreen extends StatelessWidget {
@@ -36,9 +35,9 @@ class AddOrderScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: OrderProductsList(),
+      body: const Padding(
+        padding:  EdgeInsets.all(8.0),
+        child:  OrderProductsList(),
       ),
     );
   }

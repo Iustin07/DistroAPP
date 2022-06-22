@@ -1,9 +1,9 @@
-import '../model/employe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/users.dart';
+import '../utils/validation.dart';
 class AddEmployerScreen extends StatefulWidget {
-  AddEmployerScreen({Key? key}) : super(key: key);
+  const AddEmployerScreen({Key? key}) : super(key: key);
 static const routeName="/add-employee";
 
 
@@ -32,9 +32,10 @@ class _AddEmployerScreenState extends State<AddEmployerScreen> {
     super.dispose();
   }
   Future <void> _saveForm() async{
-    //form validations
+    if(!_employeForm.currentState!.validate()){
+      return;
+    }
     _employeForm.currentState!.save();
-    print(employeeValues);
     setState(() {
       _loading=true;
     });
@@ -45,11 +46,11 @@ class _AddEmployerScreenState extends State<AddEmployerScreen> {
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text('An error occurred!'),
-                content: Text('Something went wrong.'),
+                title: const Text('An error occurred!'),
+                content: const Text('Something went wrong.'),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('Okay'),
+                    child: const Text('Okay'),
                     onPressed: () {
                       Navigator.of(ctx).pop();
                     },
@@ -69,8 +70,8 @@ class _AddEmployerScreenState extends State<AddEmployerScreen> {
  
     return
       Scaffold(
-        appBar: AppBar(title: Text('Add employee'),),
-        body:_loading? Center(child: CircularProgressIndicator(),) 
+        appBar: AppBar(title: const Text('Add employee'),),
+        body:_loading? const Center(child: CircularProgressIndicator(),) 
         :Container(
           color: Theme.of(context).primaryColor,
           child: Padding(
@@ -83,172 +84,70 @@ class _AddEmployerScreenState extends State<AddEmployerScreen> {
                 key: _employeForm,
                 child: ListView(
                   children: <Widget>[
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        fillColor: Color.fromARGB(255, 30, 161, 217),
-                        filled: true,
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Username',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: const BorderSide(
-                                color: Colors.cyanAccent, width: 2.0)),
-                      ),
-                      textInputAction: TextInputAction.next,
-                  
-                      onSaved: (value) {
-                        employeeValues["username"]=value;
-                      },
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        fillColor: Color.fromARGB(255,30, 161, 217),
-                        filled: true,
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Password',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: const BorderSide(
-                            color: Colors.cyanAccent, width: 2.0)),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.text,                
-                      onSaved: (value) {
-                        employeeValues["passwordHash"]=value;
-                      },
-                    ),
-                       TextFormField(
-                      decoration: const InputDecoration(
-                        fillColor: Color.fromARGB(255, 30, 161, 217),
-                        filled: true,
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Phone number',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: const BorderSide(
-                                color: Colors.cyanAccent, width: 2.0)),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      onSaved: (value) {
-                        employeeValues["phoneNumber"]=value.toString();
-                      },
-                    ),
-                       TextFormField(
-                         maxLines: 3,
-                      decoration: const InputDecoration(
-                        fillColor: Color.fromARGB(255, 30, 161, 217),
-                        filled: true,
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Address',
-            
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: const BorderSide(
-                                color: Colors.cyanAccent, width: 2.0)),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.text,
-                      onSaved: (value) {
-                        employeeValues["address"]=value;
-                      },
-                    ),
+                    TextFormFieldWidget('Username',1,false, TextInputType.text, (value)=>Validator.validateGeneral(value), 
+                      (value)=>employeeValues["username"]=value),
+                    TextFormFieldWidget('Password',1,true, TextInputType.text, (value)=>Validator.validatePassword(value), 
+                      (value)=>employeeValues["passwordHash"]=value),
+                    TextFormFieldWidget('Phone number',1,false, TextInputType.text, (value)=>Validator.validatePhoneNumber(value), 
+                      (value)=>employeeValues["phoneNumber"]=value),
+                    TextFormFieldWidget('Address',3,false, TextInputType.text, (value)=>Validator.validateGeneral(value), 
+                      (value)=>employeeValues["address"]=value),
+                    
                     Row(
                       children: <Widget>[
-                        Text('Role',style: TextStyle(color: Colors.white,fontSize: 16),),
-                        SizedBox(
-                          width: 7,
-                        ),
+                       const  Text('Role',style: TextStyle(color: Colors.white,fontSize: 16),),
+                        const SizedBox(width: 7,),
                         DropdownButton<String>(
-                          style:TextStyle(color:Colors.white70, fontSize: 16,
+                          style:const TextStyle(color:Colors.white70, fontSize: 16,
                           fontWeight: FontWeight.w500),
                           focusColor: Colors.white60,
-                          dropdownColor:Color.fromARGB(255,30, 161, 217),
-                          items: <String>['Accountant', 'Driver', 'Agent','Storeman','Handler'].map((value) {
+                          dropdownColor:const Color.fromARGB(255,30, 161, 217),
+                          items: <String>['Accountant', 'Driver', 'Agent','Storeman','Handler','Manager'].map((value) {
                             return DropdownMenuItem(value: value, 
-                            child: Text(value,style: TextStyle(color: Colors.white),));
+                            child: Text(value,style: const TextStyle(color: Colors.white),));
                           }).toList(),
                           value: roleName,
                           onChanged: (item) => setState(() {
                             employeeValues["userRole"]=item?.toLowerCase();
                             roleName = item;
                           }),
-                          icon: Icon(Icons.arrow_drop_down_circle),
+                          icon: const Icon(Icons.arrow_drop_down_circle),
                         ),
                       ],
                     ),
-             TextFormField(
-                      decoration: const InputDecoration(
-                        fillColor: Color.fromARGB(255, 30, 161, 217),
-                        filled: true,
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Wage',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: const BorderSide(
-                                color: Colors.cyanAccent, width: 2.0)),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      onSaved: (value) {
-                        employeeValues["salary"]=value;
-                      },
-                    ),
+             TextFormFieldWidget('Wage',1,false,TextInputType.number,
+             (value)=>Validator.validateDouble(value),
+             (value)=>employeeValues["salary"]=value
+             ),
                     Row(
                       children: <Widget>[
-                        Text('Driver license',style: TextStyle(color: Colors.white,fontSize: 16),),
-                        SizedBox(
-                          width: 7,
-                        ),
+                        const Text('Driver license',style: TextStyle(color: Colors.white,fontSize: 16),),
+                        const SizedBox(width: 7, ),
                         DropdownButton<String>(
-                          style:TextStyle(color:Colors.white70, fontSize: 16),
+                          style:const TextStyle(color:Colors.white70, fontSize: 16),
                           focusColor: Colors.white60,
-                          dropdownColor: Color.fromARGB(255,30, 161, 217),
+                          dropdownColor: const Color.fromARGB(255,30, 161, 217),
                           items: <String>['None','B','C', 'CE'].map((value) {
                             return DropdownMenuItem(value: value,
-                             child: Text(value, style:TextStyle(color: Colors.white)));
+                             child: Text(value, style:const TextStyle(color: Colors.white)));
                           }).toList(),
                           value: license,
                           onChanged: (value) => setState(() {
                             license = value;
                             employeeValues["driverLicense"]=value;
                           }),
-                          icon: Icon(Icons.arrow_drop_down_circle),
+                          icon: const Icon(Icons.arrow_drop_down_circle),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    
+                   const SizedBox(height: 5, ),                 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                         ElevatedButton(onPressed: ()=>Navigator.of(context).pop(), child: Text('Cancel')),
+                         ElevatedButton(onPressed: ()=>Navigator.of(context).pop(), child: const Text('Cancel')),
                         ElevatedButton(onPressed: () {
                           _saveForm();
-                        }, child: Text('Add')),
+                        }, child: const Text('Add')),
                        
                       ],
                     ),
@@ -261,5 +160,30 @@ class _AddEmployerScreenState extends State<AddEmployerScreen> {
         ),
       );
   
+  }
+
+  TextFormField TextFormFieldWidget(String? title,int? lines,bool obscure,TextInputType type,Function validateHandler,Function saveHandler) {
+    return TextFormField(
+       obscureText: obscure,
+      maxLines: lines,
+                    decoration:  InputDecoration(
+                      fillColor: const Color.fromARGB(255, 30, 161, 217),
+                      filled: true,
+                      labelStyle: const TextStyle(color: Colors.white),
+                      labelText: title,
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide:  BorderSide(
+                              color: Colors.cyanAccent, width: 2.0)),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType:type ,
+                    validator: (value)=>validateHandler(value),
+                    onSaved: (value)=>saveHandler(value),
+                  );
   }
 }

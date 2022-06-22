@@ -23,7 +23,7 @@ class HeroReviewWidget extends StatelessWidget {
                       }));
                     },
                     child: Card(
-                      color: Colors.blue.shade600,
+                      color:const  Color.fromRGBO(169,169,169, 0.8),
                       child: Column(
                         children: [
                           Text(

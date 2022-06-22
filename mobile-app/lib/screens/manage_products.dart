@@ -1,7 +1,8 @@
-import '../widgets/auxiliary_widgets/manage_products_widgets/add_product.dart';
-import 'package:flutter/material.dart';
-import '../widgets/auxiliary_widgets/manage_products_widgets/products_list_widget.dart';
 
+import 'package:flutter/material.dart';
+import '../widgets/manage_products_widgets/add_product.dart';
+import '../widgets/manage_products_widgets/products_list_widget.dart';
+import '../widgets/simple_app_bat.dart';
 class ManageProductsScreen extends StatelessWidget {
   const ManageProductsScreen({Key? key}) : super(key: key);
   static const routeName = '/products';
@@ -9,19 +10,14 @@ class ManageProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build manage calaled');
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop()),
-        title: const Text('Manage products'),
-        actions: <Widget>[
-          IconButton(
+      appBar: SimpleAppBar(title:'Manage products',
+      actions: <Widget>[
+         IconButton(
               onPressed: () =>
                   Navigator.of(context).pushNamed(AddProductScreen.routeName),
-              icon: Icon(Icons.add))
-        ],
+              icon: const Icon(Icons.add))
+      ],
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,

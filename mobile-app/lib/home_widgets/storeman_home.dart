@@ -3,6 +3,7 @@ import '../widgets/grid_item.dart';
 import '../screens/storeman_screens/manage_losts_screen.dart';
 import '../screens/storeman_screens/shipping_screen.dart';
 import '../screens/handler_screens/see_centralizers_screen.dart';
+import '../screens/manage_products.dart';
 class StoremanHome extends StatelessWidget {
   const StoremanHome({Key? key}) : super(key: key);
 
@@ -14,7 +15,7 @@ class StoremanHome extends StatelessWidget {
         GridItem(
             key: UniqueKey(),
             itemTitle: 'Manage losts',
-            color: const Color.fromARGB(255, 192, 192, 192),
+            color: const Color.fromRGBO(155, 89, 182, 1),
             iconp: const IconData(0xf77d,
                 fontFamily: 'CupertinoIcons', fontPackage: 'cupertino_icons'),
             onTapHandler: () =>
@@ -32,6 +33,9 @@ class StoremanHome extends StatelessWidget {
               fontFamily: 'CupertinoIcons', fontPackage: 'cupertino_icons'),
           onTapHandler: ()=>Navigator.of(context).pushNamed(CentralizersScreen.routeName),
         ),
+        GridItem(key: UniqueKey(),
+              itemTitle: 'Manage products',color:const Color.fromARGB(255,192,192,192) 
+            , iconp: Icons.inventory_2, onTapHandler: ()=>Navigator.of(context).pushNamed(ManageProductsScreen.routeName)),
       ],
     );
   }

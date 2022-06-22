@@ -1,7 +1,8 @@
-import 'package:distroapp/widgets/clients/modify_client.dart';
-import 'package:distroapp/widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
+import './modify_client.dart';
+import '../simple_app_bat.dart';
 import '../../model/client.dart';
+
 class ModifyClient extends StatelessWidget {
   const ModifyClient({Key? key}) : super(key: key);
 static const routeName="/edit-client";

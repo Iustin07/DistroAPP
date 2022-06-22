@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../model/review.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../model/review.dart';
 class DetailsReview extends StatelessWidget {
- DetailsReview({Key? key,
+ const DetailsReview({Key? key,
   required this.review}) : super(key: key);
 final Review review;
   @override
@@ -17,7 +17,11 @@ final Review review;
           child: Hero(
             tag: 'imageHero',
             child: Container(
-              color: Color.fromARGB(179, 226, 226, 226),
+              decoration:const  BoxDecoration(
+                 borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                 color: Color.fromARGB(179, 226, 226, 226),
+              ),
+              
               height: 400,
               width: 300,
               child: Column(

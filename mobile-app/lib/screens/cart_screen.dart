@@ -1,6 +1,7 @@
-import '../widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/simple_app_bat.dart';
 import '../model/cart.dart' show Cart;
 import '../widgets/orders/cart_item_widget.dart' show CartItem;
 import '../providers/clients.dart';
@@ -50,7 +51,7 @@ class _CartScreenState extends State<CartScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: SimpleAppBar(title: 'Order'),
       body: _loading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -69,9 +70,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
+                        const SizedBox(width: 20, ),
                         SingleChildScrollView(
                           child: DropdownButton<String>(
                             hint: const Text('Select client'),
@@ -83,9 +82,9 @@ class _CartScreenState extends State<CartScreen> {
                                 const Color.fromARGB(255, 30, 161, 217),
                             items: clientsList!.isEmpty
                                 ? [
-                                    DropdownMenuItem(
-                                        child: Text("Sunt prost"),
-                                        value: "foarte prost"),
+                                    const DropdownMenuItem(
+                                        value: "empty",
+                                        child: Text("empty client list")),
                                   ]
                                 : clientsList!.entries.map((e) {
                                     return DropdownMenuItem(
@@ -98,7 +97,6 @@ class _CartScreenState extends State<CartScreen> {
                                   }).toList(),
                             value: _clientId.toString(),
                             onChanged: (item) => setState(() {
-                              print(item);
                               _clientId = int.tryParse(item as String);
                             }),
                             icon: const Icon(
@@ -154,7 +152,6 @@ class _CartScreenState extends State<CartScreen> {
                                       _loading = false;
                                       cart!.clear();
                                     });
-                                    // Navigator.of(context).pop();
                                   });
                                 },
                               )
@@ -179,7 +176,6 @@ class _CartScreenState extends State<CartScreen> {
                                         .textTheme
                                         .titleSmall!
                                         .color,
-                                    //color: Theme.of(context).primaryTextTheme.title.color,
                                   ),
                                 ),
                                 backgroundColor: Theme.of(context).primaryColor,

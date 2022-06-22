@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../../../model/cart.dart' show Cart;
 import '../../../../model/product.dart' show Product;
@@ -60,19 +59,13 @@ class _OrderProductItemState extends State<OrderProductItem> {
                         widget.product.productName,
                         style:const  TextStyle(fontSize: 16)),
                     Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         //Text('Stock: ${product.stock}'),
                         Text('Price:${widget.product.priceChoice} RON'),
-                       const SizedBox(
-                          width: 5,
-                        ),
+                       const SizedBox(width: 5, ),
                         Text(widget.product.unitMeasure),
-                     const   SizedBox(
-                          width: 5,
-                        ),
-                        Text(widget.product.category),
-                   
+                     const   SizedBox(width: 5,),
+                        Text(widget.product.category),                   
                       ],
                     )
                   ]),
@@ -83,8 +76,7 @@ class _OrderProductItemState extends State<OrderProductItem> {
               color: Colors.white,
               width: 70,
               height: 30,
-              child: TextField(
-                
+              child: TextField(    
                 controller: _quantityController,
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
@@ -117,16 +109,14 @@ class _OrderProductItemState extends State<OrderProductItem> {
                       widget.product.productId,
                       widget.product.productName,
                       widget.product.priceChoice,
-                      int.parse(_quantityController.text as String),
+                      int.parse(_quantityController.text),
                       widget.product.weight,
                     );
                     Scaffold.of(context).hideCurrentSnackBar();
                     Scaffold.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          'Added item to order!',
-                        ),
-                        duration: Duration(seconds: 2),
+                        content: const Text('Added item to order!', ),
+                        duration: const Duration(seconds: 2),
                         action: SnackBarAction(
                           label: 'UNDO',
                           onPressed: () {
@@ -140,7 +130,7 @@ class _OrderProductItemState extends State<OrderProductItem> {
                     });
                   }
                 },
-                icon: Icon(Icons.add)),
+                icon:const Icon(Icons.add)),
           ],
         )
       ]),

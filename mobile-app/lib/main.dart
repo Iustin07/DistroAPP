@@ -1,13 +1,18 @@
 /* #region */
-import 'package:distroapp/providers/transport_cart.dart';
-import 'package:distroapp/providers/transports.dart';
-import 'package:distroapp/screens/accountant_screens.dart/add_transport.dart';
-import 'package:distroapp/screens/driver_screens/centralizerdetailscreen.dart';
-import 'package:distroapp/screens/driver_screens/view_centralizer_screen.dart';
-import 'package:distroapp/screens/manager_screens.dart/manage_losts_manager.dart';
-import 'package:distroapp/screens/storeman_screens/detailing_transport.dart';
-import 'package:distroapp/screens/storeman_screens/waiting_transports_screen.dart';
-import 'package:distroapp/widgets/clients/modify_client_screen.dart';
+
+import 'package:distroapp/screens/accountant_screens.dart/generate_centralizers_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './providers/transport_cart.dart';
+import './providers/transports.dart';
+import './screens/accountant_screens.dart/add_transport.dart';
+import './screens/driver_screens/centralizerdetailscreen.dart';
+import './screens/driver_screens/search_client.dart';
+import './screens/driver_screens/view_centralizer_screen.dart';
+import './screens/manager_screens.dart/manage_losts_manager.dart';
+import './screens/storeman_screens/detailing_transport.dart';
+import './screens/storeman_screens/waiting_transports_screen.dart';
+import './widgets/clients/modify_client_screen.dart';
 
 import './screens/storeman_screens/manage_losts_screen.dart';
 import './screens/storeman_screens/shipping_screen.dart';
@@ -30,12 +35,10 @@ import './screens/cart_screen.dart';
 import './screens/agent_screens/add_order_screen.dart';
 import './screens/manage_account_screen.dart';
 import './screens/manage_employees_screen.dart';
-import './widgets/auxiliary_widgets/manage_products_widgets/add_product.dart';
-import './widgets/auxiliary_widgets/manage_products_widgets/modify_widget.dart';
+import './widgets/manage_products_widgets/add_product.dart';
+import './widgets/manage_products_widgets/modify_widget.dart';
 import './screens/manage_products.dart';
 import './screens/auth_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import './providers/authentification.dart';
 import './screens/after_login.dart';
 import './model/cart.dart';
@@ -59,10 +62,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Authentication()),
-        ChangeNotifierProvider.value(
-          value: Cart(),
-        ),
-        //ChangeNotifierProvider.value(value: Products(),),
+        ChangeNotifierProvider.value(value: Cart(),),
         ChangeNotifierProxyProvider<Authentication, Products>(
           create: (ctx) => Products(
               Provider.of<Authentication>(ctx, listen: false).token, []),
@@ -88,8 +88,10 @@ class MyApp extends StatelessWidget {
               Losts(Provider.of<Authentication>(ctx, listen: false).token),
           update: (ctx, auth, previous) => Losts(auth.token),
         ),
-        ChangeNotifierProvider.value(
-          value: Stats(),
+        ChangeNotifierProxyProvider<Authentication, Stats>(
+          create: (ctx) =>
+              Stats(Provider.of<Authentication>(ctx, listen: false).token),
+          update: (ctx, auth, previous) => Stats(auth.token),
         ),
                  ChangeNotifierProxyProvider<Authentication, Centralizers>(
           create: (ctx) =>
@@ -113,27 +115,27 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Distro App',
           theme: ThemeData(
+            errorColor: Colors.red,
             primaryColor: Colors.blue[800],
            textTheme: const TextTheme(titleSmall: TextStyle(color: Colors.white)) 
           ),
-           home:authenticate.isAuth? HomeScreen(role: authenticate.getRole):
-           const AuthScreen(),
-       //home:const  HomeScreen(role: 'accountant'),
-
+            home:authenticate.isAuth? HomeScreen(role: authenticate.getRole):
+            const AuthScreen(),
+          //home:const HomeScreen(role:'handler'),
           routes: {
             AuthScreen.routeName: (ctx) => const AuthScreen(),
             HomeScreen.routeName: (ctx) =>HomeScreen(role: authenticate.getRole),
             ManageProductsScreen.routeName: (ctx) =>const ManageProductsScreen(),
             ManageEmployeScreen.routeName: (ctx) => const ManageEmployeScreen(),
             ManageAccountScreen.routeName: (ctx) => const ManageAccountScreen(),
-            ProductModifyScreen.routeName: (ctx) => ProductModifyScreen(),
-            AddProductScreen.routeName: (ctx) => AddProductScreen(),
+            ProductModifyScreen.routeName: (ctx) => const ProductModifyScreen(),
+            AddProductScreen.routeName: (ctx) =>const AddProductScreen(),
             AddOrderScreen.routeName: (ctx) => const AddOrderScreen(),
             AddClientScreen.routeName: (ctx) => const AddClientScreen(),
             CartScreen.routeName: (ctx) => const CartScreen(),
             ManageClientsScreen.routeName: (ctx) => const ManageClientsScreen(),
-            AddEmployerScreen.routeName: (ctx) => AddEmployerScreen(),
-            EmployeeDetailsScreen.routeName: (ctx) => EmployeeDetailsScreen(),
+            AddEmployerScreen.routeName: (ctx) => const AddEmployerScreen(),
+            EmployeeDetailsScreen.routeName: (ctx) =>const EmployeeDetailsScreen(),
             SeeOrdersScreen.routeName: (ctx) =>const  SeeOrdersScreen(),
             OrderDetailsProducts.routeName: (ctx) =>const OrderDetailsProducts(),
             StatsScreen.routeName: (ctx) => const StatsScreen(),
@@ -141,8 +143,8 @@ class MyApp extends StatelessWidget {
             CentralizersScreen.routeName: (ctx) => const CentralizersScreen(),
             CentralizerDetails.routeName: (ctx) => CentralizerDetails(),
             ManageCentralizerScreen.routeName: (ctx) =>const ManageCentralizerScreen(),
-            ClientLocation.routeName:(ctx)=>ClientLocation(),
-            WaitingClientsScreen.routeName:(ctx)=>WaitingClientsScreen(),
+            ClientLocation.routeName:(ctx)=>const ClientLocation(),
+            WaitingClientsScreen.routeName:(ctx)=>const WaitingClientsScreen(),
             ManageLostsScreen.routeName:(ctx)=>const ManageLostsScreen(),
             ShippingScreen.routeName:(ctx) => const ShippingScreen(),  
             ViewCentralizerScreen.routeName:(ctx)=>const ViewCentralizerScreen() , 
@@ -150,8 +152,10 @@ class MyApp extends StatelessWidget {
             ManageLostsManagerScreen.routeName:(ctx)=>const ManageLostsManagerScreen(),
             ModifyClient.routeName:(ctx)=>const ModifyClient(),
             WaitingTransportsScreen.routeName:(ctx)=>const WaitingTransportsScreen(),
-            TransportDetails.routeName:(ctx)=>TransportDetails(),
+            TransportDetails.routeName:(ctx)=>const TransportDetails(),
             AddTransportScreen.routeName:(ctx)=>const AddTransportScreen(),
+            SearchClientScreen.routeName:(ctx)=>SearchClientScreen(),
+            GenerateCentralizersScreen.routeName:(ctx)=>const GenerateCentralizersScreen(),
           },
         ),
       ),

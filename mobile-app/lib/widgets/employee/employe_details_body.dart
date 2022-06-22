@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
-import "../../model/employe.dart";
 import "package:provider/provider.dart";
-import '../../providers/users.dart';
 import "dart:math";
+import "../../model/employe.dart";
+import '../../providers/users.dart';
 
 class EmployeDetailsBody extends StatefulWidget {
-  EmployeDetailsBody({
+  const EmployeDetailsBody({
     Key? key,
     this.employeId,
     this.deviceHeight,
@@ -73,7 +73,9 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
    try {
        await Provider.of<Users>(context, listen: false).deleteEmploye(id);
     } catch (error) {
-      print(error);}
+      throw(error);
+      
+      }
       setState(() {
       _loading = false;
     });
@@ -94,8 +96,8 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
       await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text('An error occurred!'),
-          content: Text('Something went wrong.'),
+          title:const Text('An error occurred!'),
+          content:const  Text('Something went wrong.'),
           actions: <Widget>[
             TextButton(
               child: Text('Okay'),
@@ -116,9 +118,9 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
   @override
   Widget build(BuildContext context) {
     return _loading
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 150, right: 10, left: 10),
+            padding: const EdgeInsets.only(top: 20, bottom: 150, right: 10, left: 10),
             child: _buildFlipAnimation(
                 widget.deviceWidth, widget.deviceHeight, employee as Employee),
           );
@@ -187,7 +189,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
           borderRadius: BorderRadius.circular(15.0),
           color: Colors.blue,
         ),
-        margin: EdgeInsets.all(10),
+        margin:const EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
             Row(
@@ -209,12 +211,11 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: TextFormField(
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             initialValue: employee.address,
                             maxLines: 3,
                             decoration: const InputDecoration(
-                              fillColor:
-                                  const Color.fromARGB(255, 30, 161, 217),
+                              fillColor: Color.fromARGB(255, 30, 161, 217),
                               filled: true,
                               labelStyle: TextStyle(color: Colors.white),
                               labelText: 'Address',
@@ -240,11 +241,10 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             initialValue: employee.phoneNumber,
                             decoration: const InputDecoration(
-                              fillColor:
-                                  const Color.fromARGB(255, 30, 161, 217),
+                              fillColor: Color.fromARGB(255, 30, 161, 217),
                               filled: true,
                               labelStyle: TextStyle(color: Colors.white),
                               labelText: 'Phone number',
@@ -257,7 +257,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20)),
-                                  borderSide: const BorderSide(
+                                  borderSide:  BorderSide(
                                       color: Colors.cyanAccent, width: 2.0)),
                             ),
                             textInputAction: TextInputAction.next,
@@ -270,11 +270,10 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             initialValue: employee.salary.toString(),
                             decoration: const InputDecoration(
-                              fillColor:
-                                  const Color.fromARGB(255, 30, 161, 217),
+                              fillColor: Color.fromARGB(255, 30, 161, 217),
                               filled: true,
                               labelStyle: TextStyle(color: Colors.white),
                               labelText: 'Wage',
@@ -287,7 +286,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20)),
-                                  borderSide: const BorderSide(
+                                  borderSide:  BorderSide(
                                       color: Colors.cyanAccent, width: 2.0)),
                             ),
                             textInputAction: TextInputAction.next,
@@ -297,47 +296,41 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                       const SizedBox( height: 10,),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Row(
                             children: <Widget>[
-                              Text(
+                             const  Text(
                                 'Driver license',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
-                              SizedBox(
-                                width: 7,
-                              ),
+                              const SizedBox(width: 7,),
                               DropdownButton<String>(
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white70, fontSize: 16),
                                 focusColor: Colors.white60,
                                 dropdownColor:
-                                    Color.fromARGB(255, 30, 161, 217),
+                                const    Color.fromARGB(255, 30, 161, 217),
                                 items: <String>['None', 'B', 'C', 'CE']
                                     .map((value) {
                                   return DropdownMenuItem(
                                       value: value,
                                       child: Text(value,
                                           style:
-                                              TextStyle(color: Colors.white)));
+                                              const TextStyle(color: Colors.white)));
                                 }).toList(),
                                 value: _license,
                                 onChanged: (value) => setState(() {
                                   _license = value;
                                 }),
-                                icon: Icon(Icons.arrow_drop_down_circle),
+                                icon: const Icon(Icons.arrow_drop_down_circle),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                       const SizedBox( height: 10, ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
@@ -348,7 +341,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                                           Theme.of(context).primaryColor),
                                 ),
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: Text('Cancel')),
+                                child:const Text('Cancel')),
                             ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -358,7 +351,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                                 onPressed: () {
                                   _fireEmployee(widget.employeId);
                                 },
-                                child: Text('Fire')),
+                                child:const Text('Fire')),
                             ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -368,7 +361,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                                 onPressed: () {
                                   _saveForm();
                                 },
-                                child: Text('Save')),
+                                child:const Text('Save')),
                           ],
                         ),
                       ],
@@ -386,7 +379,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
         borderRadius: BorderRadius.circular(15.0),
         color: Colors.blue,
       ),
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Row(
@@ -404,7 +397,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
             child: Center(
               child: Container(
                   color: Colors.white70,
-                  child: Icon(
+                  child:const Icon(
                     Icons.person_sharp,
                     size: 150,
                     color: Colors.blue,
@@ -428,17 +421,17 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                   Center(
                       child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'Employe name',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Text(
                         employee.username,
-                        style: TextStyle(
+                        style:const  TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold),
@@ -448,17 +441,17 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                   Center(
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           'Role',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Text(
                           employee.userRole.toUpperCase(),
-                          style: TextStyle(
+                          style:const  TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -469,7 +462,7 @@ class _EmployeDetailsBodyState extends State<EmployeDetailsBody> {
                   ),
                   Text(
                     employee.createdOn.split(".")[0],
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),

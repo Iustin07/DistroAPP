@@ -69,11 +69,15 @@ class _ShowLostsListState extends State<ShowLostsList> {
         : ListView.builder(
             itemCount: _losts.length,
             itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: ListTile(
+                    shape:RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side:const BorderSide(color: Colors.black),
+          ),
                     tileColor: Colors.purple,
                     title: Text(_losts[index].product!.productName),
-                    trailing: Text(_losts[index].quantity.toString()),
+                    trailing: Text('${_losts[index].quantity.toString()} ${_losts[index].product!.unitMeasure}'),
                     subtitle: Text(_losts[index].dateOfLost.toString()),
                   ),
                 ));
@@ -81,7 +85,7 @@ class _ShowLostsListState extends State<ShowLostsList> {
 }
 
 class AddDialog extends StatefulWidget {
-  AddDialog({Key? key}) : super(key: key);
+  const AddDialog({Key? key}) : super(key: key);
 
   @override
   State<AddDialog> createState() => _AddDialogState();
@@ -93,17 +97,17 @@ class _AddDialogState extends State<AddDialog> {
   List<Product> _products = [];
   @override
   void didChangeDependencies() {
-    if (_init) {
+    if(_init){
       setState(() {
         _loading = true;
       });
       Provider.of<Products>(context).fetchAndSetProducts();
       setState(() {
-        _products = Provider.of<Products>(context).products;
+         _products = Provider.of<Products>(context,listen: false).products;
         _loading = false;
       });
     }
-    _init = false;
+    _init=false;
     super.didChangeDependencies();
   }
 
@@ -114,7 +118,7 @@ class _AddDialogState extends State<AddDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: Text('Add lost'),
+      title:const Text('Add lost'),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
@@ -123,12 +127,10 @@ class _AddDialogState extends State<AddDialog> {
             children: <Widget>[
               Row(
                 children: [
-                  Text('Choose product'),
-                  SizedBox(
-                    width: 10,
-                  ),
+                  const Text('Choose product'),
+                 const SizedBox( width: 10, ),
                   _loading
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : DropdownButton<Product>(
                           menuMaxHeight: 300,
                           hint: const Text('product'),
@@ -153,7 +155,7 @@ class _AddDialogState extends State<AddDialog> {
                 ],
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration:const InputDecoration(
                   labelText: 'quantity',
                   icon: Icon(Icons.add_moderator),
                 ),
@@ -167,8 +169,8 @@ class _AddDialogState extends State<AddDialog> {
         ),
       ),
       actions: [
-        RaisedButton(
-            child: Text("Add"),
+        TextButton(
+            child: const Text("Add"),
             onPressed: () {
               _saveLost();
             })
@@ -177,21 +179,19 @@ class _AddDialogState extends State<AddDialog> {
   }
 
   void _saveLost() {
-    print('saved form was called');
     _formLost.currentState!.save();
     Provider.of<Losts>(context, listen: false)
         .addLost(dropdownValue!.productId, quantity as double)
         .then((value) {
       if (value == 200) {
-        //Navigator.of(context).pop();
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => ManageLostsScreen(),
+              builder: (BuildContext context) =>const ManageLostsScreen(),
             ),
             ModalRoute.withName('/'));
       }
-      ;
+      
     });
   }
 }

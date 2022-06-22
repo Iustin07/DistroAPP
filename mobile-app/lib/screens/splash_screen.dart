@@ -5,9 +5,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: const Text('App is loading'),
+    return const Scaffold(
+      body:  Center(
+        child:  Text('App is loading'),
       ),
     );
   }

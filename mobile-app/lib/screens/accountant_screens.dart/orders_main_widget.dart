@@ -1,9 +1,9 @@
-import 'package:distroapp/model/custom_employe.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../model/order.dart';
 import '../../screens/agent_screens/order_card.dart';
-import 'package:provider/provider.dart';
+import '../../model/custom_employe.dart';
 import '../../providers/orders_provider.dart';
 import '../../providers/users.dart';
 class OrdersMainWidget extends StatefulWidget {
@@ -53,15 +53,16 @@ class _OrdersMainWidgetState extends State<OrdersMainWidget> {
               color: Colors.blue[200],
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10)),
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.only(left: 25,right: 15,top: 10,bottom: 10),
           child: Row(
             children: <Widget>[
+              const Icon(Icons.person_pin_sharp),
               const Text('Select agent',
                 style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold),),
               const SizedBox(
                 width: 10,
               ),
-            _loading? CircularProgressIndicator() :DropdownButton<CustomEmployee>(
+            _loading? const CircularProgressIndicator() :DropdownButton<CustomEmployee>(
                 menuMaxHeight: 300,
                 hint: const Text('agent'),
                 value: agentName,
@@ -135,7 +136,7 @@ class _OrdersMainWidgetState extends State<OrdersMainWidget> {
     return Expanded(
       child: _orders.isEmpty
           ? Container(
-              child:  const Text('There are is no request yet'),
+              child: const  Text('There are is no request yet'),
             )
           : ListView.builder(
               itemCount: _orders.length,

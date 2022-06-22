@@ -1,8 +1,8 @@
-import 'package:distroapp/screens/storeman_screens/detailing_transport.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../model/transport.dart';
 import '../../providers/transports.dart';
+import './detailing_transport.dart';
 class TransportsMainWidget extends StatefulWidget {
   TransportsMainWidget({Key? key,required this.isWainting}) : super(key: key);
   bool isWainting;
@@ -38,7 +38,7 @@ class _TransportsMainScreenState extends State<TransportsMainWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    return _loading?Center(child: CircularProgressIndicator(),):
+    return _loading?const Center(child: CircularProgressIndicator(),):
     ListView.builder(
       itemCount: _transports!.length,
       itemBuilder: (ctx,index)=>Padding(
@@ -62,7 +62,7 @@ bool? isWaiting;
     return ListTile(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: Colors.black),
+            side: const BorderSide(color: Colors.black),
           ),
           key: ValueKey(transport!.idTrasnport.toString()),
           textColor: Colors.white,

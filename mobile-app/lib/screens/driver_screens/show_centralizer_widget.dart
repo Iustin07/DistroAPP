@@ -114,15 +114,16 @@ class CentralizerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(left: 30,right: 30),
       elevation: 10,
-      color: Colors.lime,
+      color: const Color.fromARGB(255, 214, 104, 83),
       child: InkWell(
         onTap: ()=>Navigator.of(context).pushNamed(CentralizerDetailsScreen.routeName, arguments: centralizer.centralizerId),
         child: Row(
           children: [
-            Text(centralizer.centralizerId.toString()),
-            const SizedBox(width: 15,),
-            Text(centralizer.driverName),
+            Text(centralizer.centralizerId.toString(),style: TextStyle(color: Colors.white),),
+            const SizedBox(width: 30,height: 60,),
+            Text(centralizer.driverName,style: TextStyle(fontSize: 20,fontWeight:FontWeight.w400,color: Colors.white ),),
           ],
         ),
       ),

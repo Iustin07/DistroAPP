@@ -1,10 +1,10 @@
-import 'package:distroapp/model/custom_centralizer.dart';
-import '../model/summar.dart';
-import '../model/centralizer.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import '../model/custom_centralizer.dart';
+import '../model/summar.dart';
+import '../model/centralizer.dart';
 import '../properties.dart' show serverUrl;
-import 'package:http/http.dart' as http;
 import '../properties.dart';
 class Centralizers with ChangeNotifier {
   List<Centralizer> _centralizers = [];
@@ -76,6 +76,19 @@ Future<List<Centralizer>> fetchCentralizers() async {
     }
  
 }
+Future<List<Centralizer>> fetchByDateCentralizers(String date) async {
+  final url=Uri.parse("$serverUrl/centralizers/specific?date=$date");
+    try {
+      final response =
+          await http.get(url, headers: {'Authorization': 'Bearer $_token'});
+      Iterable data = json.decode(response.body);
+      return  data.map((e) => Centralizer.mapJsonToObeject(e)).toList();
+      
+    } catch (error) {
+      throw (error);
+    }
+ 
+}
 Future<Centralizer> fectchById(int id)async{
   final url=Uri.parse('$serverUrl/centralizers/$id');
   try {
@@ -92,8 +105,7 @@ Future<Centralizer> fectchById(int id)async{
 Future <List<Centralizer>> fetchCentralizersByDateAndDriver(String date)async{
 final url=Uri.parse('${serverUrl}/centralizers/driver?date=$date');
 try {
-      final response =
-          await http.get(url, headers: {'Authorization': 'Bearer $_token'});
+      final response =await http.get(url, headers: {'Authorization': 'Bearer $_token'});
       Iterable data = json.decode(response.body);
       return  data.map((e) =>Centralizer.mapJsonToObeject(e)).toList();
       
@@ -102,7 +114,17 @@ try {
     }
 }
 
-
+Future<dynamic> generateCentralizers(String date) async {
+  final url=Uri.parse("$serverUrl/centralizers/generate?date=$date");
+    try {
+      final response =await http.post(url, headers: {'Authorization': 'Bearer $_token'});
+      print( response.statusCode);
+      return response.statusCode;
+    } catch (error) {
+      throw (error);
+    }
+ 
+}
 
 
   

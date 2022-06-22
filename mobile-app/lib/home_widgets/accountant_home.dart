@@ -52,7 +52,8 @@ class _AccountantHomeState extends State<AccountantHome> {
                color:const Color.fromARGB(255,250,250,255),
             iconp: Icons.business_center,
          
-            onTapHandler: ()=>Navigator.of(context).pushNamed(ManageClientsScreen.routeName),
+            onTapHandler: ()=>
+            Navigator.of(context).pushNamed(ManageClientsScreen.routeName),
      ),
          ],
          

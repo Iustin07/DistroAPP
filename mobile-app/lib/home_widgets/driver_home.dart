@@ -1,3 +1,5 @@
+import 'package:distroapp/screens/driver_screens/search_client.dart';
+
 import '../screens/driver_screens/view_centralizer_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/grid_item.dart';
@@ -20,7 +22,7 @@ class DriverHome extends StatelessWidget {
             itemTitle: 'Client Location',
             color: const Color.fromARGB(255, 0, 229, 232),
             iconp: Icons.location_on,
-            onTapHandler: () {}),
+            onTapHandler: ()=>Navigator.of(context).pushNamed(SearchClientScreen.routeName)),
         // GridItem(
         //   itemTitle: 'Repair car',
         //   color: const Color.fromARGB(255, 244, 208, 111),

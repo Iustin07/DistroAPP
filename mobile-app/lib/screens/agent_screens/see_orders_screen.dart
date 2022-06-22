@@ -1,11 +1,12 @@
- import 'package:distroapp/providers/authentification.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import './order_card.dart';
 import '../../widgets/simple_app_bat.dart';
-import 'package:flutter/material.dart';
- import 'package:provider/provider.dart';
- import '../../providers/orders_provider.dart';
- import '../../model/order.dart';
+import '../../providers/orders_provider.dart';
+import '../../model/order.dart';
+import '../../providers/authentification.dart';
+ 
  class SeeOrdersScreen extends StatefulWidget {
    const SeeOrdersScreen({Key? key}) : super(key: key);
  static const routeName="/see-orders";
@@ -35,8 +36,8 @@ class _SeeOrdersScreenState extends State<SeeOrdersScreen> {
     final String formatted = formatter.format(now);
     Provider.of<Orders>(context).fetchOrderOfAgent(agentId,formatted).then((value) {
        ordersObject =Provider.of<Orders>(context,listen: false);
-     orders=ordersObject!.orders;
      setState(() {
+        orders=ordersObject!.orders;
        _loading=false;
      });
     });
@@ -53,8 +54,8 @@ class _SeeOrdersScreenState extends State<SeeOrdersScreen> {
        backgroundColor: Theme.of(context).primaryColor,
       appBar: SimpleAppBar(title:'See orders'),
       body:SingleChildScrollView(
-          child: _loading?Center(child: CircularProgressIndicator(),)
-          :Container(
+          child: _loading?const Center(child: CircularProgressIndicator(),)
+          :SizedBox(
             height: MediaQuery.of(context).size.height*0.8,
             child: 
             Column(
@@ -65,27 +66,21 @@ class _SeeOrdersScreenState extends State<SeeOrdersScreen> {
                     Chip(
                             label: Text(
                               '${ordersObject!.getTotalWeight.toStringAsFixed(2)} kg',
-                              style: TextStyle(
-                                  //color: Theme.of(context).primaryTextTheme.title.color,
-                                  ),
                             ),
                             backgroundColor:Colors.amber,
                           ),
                        Chip(
                             label: Text(
                               '${ordersObject!.getTotalValue.toStringAsFixed(2)} RON',
-                              style: TextStyle(
-                                  //color: Theme.of(context).primaryTextTheme.title.color,
-                                  ),
                             ),
                             backgroundColor: Colors.amber,
                           ),
               ],),
               Expanded(child:
-                  orders!.isEmpty?Container(child: Text('There are no products yet'),):
+                  orders!.isEmpty?const Center(child: Text('There are no products yet')):
             ListView.builder(
               itemCount: orders!.length,
-              itemBuilder: (ctx,index)=>OrderCard(order: orders![index],color: Color.fromARGB(255,244,208,111),),
+              itemBuilder: (ctx,index)=>OrderCard(order: orders![index],color: const Color.fromARGB(255,244,208,111),),
               ),
               ),
               ],

@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-
+import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import '../model/transport.dart';
 import '../properties.dart';
-import 'package:http/http.dart' as http;
 import '../model/transport_item.dart';
 import '../model/review.dart';
 class Transports with ChangeNotifier{
@@ -63,7 +61,6 @@ final url=Uri.parse("$serverUrl/transports/$transportId");
     
        return response.statusCode;
     } catch (error) {
-      print(error);
       throw error;
     }
 }

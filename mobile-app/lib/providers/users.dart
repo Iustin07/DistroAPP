@@ -1,10 +1,9 @@
-import 'package:distroapp/properties.dart';
-
-import '../model/employe.dart';
 import 'package:flutter/material.dart';
-import '../model/custom_employe.dart';
 import 'package:http/http.dart' as http;
 import'dart:convert';
+import '../properties.dart';
+import '../model/employe.dart';
+import '../model/custom_employe.dart';
 import '../model/httpexception.dart';
 class Users with ChangeNotifier{
   String _token;
@@ -50,10 +49,8 @@ final url = Uri.parse('h$serverUrl/users/$id');
           'Authorization':'Bearer $_token'},
         body: json.encode(datajson),
       );
-      print(jsonDecode(response.body));
        notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
@@ -73,7 +70,6 @@ final url = Uri.parse('h$serverUrl/users/$id');
       );
        notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }

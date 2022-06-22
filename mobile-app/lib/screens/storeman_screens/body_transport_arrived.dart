@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../model/transport.dart';
-import 'package:provider/provider.dart';
 import './hero_review_widget.dart';
 import '../../model/review.dart';
 class BodyTransportArived extends StatefulWidget {
@@ -25,7 +24,7 @@ class _BodyTransportArivedState extends State<BodyTransportArived> {
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.local_shipping_outlined,
             size: 100,
           ),
@@ -34,9 +33,13 @@ class _BodyTransportArivedState extends State<BodyTransportArived> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
+                decoration:const  BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  color: Color.fromRGBO(192,192, 192, 1),
+                ),
                 height: 100,
                 width: 100,
-                color: Colors.amber,
+               
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -46,9 +49,13 @@ class _BodyTransportArivedState extends State<BodyTransportArived> {
                     ]),
               ),
               Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  color: Color.fromRGBO(211,211, 211, 1),
+                ),
                 height: 100,
                 width: 100,
-                color: Colors.red,
+                
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -60,7 +67,7 @@ class _BodyTransportArivedState extends State<BodyTransportArived> {
             ],
           ),
            widget.transport.review == null
-            ? Text('no reviews')
+            ? const Text('no reviews')
             : HeroReviewWidget(review:widget.transport.review as Review, transportId: widget.transport.idTrasnport),
           Expanded(
             child: Padding(

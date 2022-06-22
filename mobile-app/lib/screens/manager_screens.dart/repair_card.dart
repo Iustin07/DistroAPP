@@ -30,7 +30,7 @@ children:<Widget>[
                      
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [ Text('Cars fixes'),
+                        children: [ const Text('Cars fixes'),
                         //SizedBox(height: 5,),
                         SizedBox(height: 10,),
                         Text('\$ 4000')],
@@ -39,18 +39,6 @@ children:<Widget>[
 
                   ],),
               ),
-            
-           
-        // Row(
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: [
-        //     Column(
-        //       mainAxisAlignment: MainAxisAlignment.end,
-        //       crossAxisAlignment: CrossAxisAlignment.center,
-        //       children: <Widget>[Text('This year car repair cost'),
-        //     Text('4000'),],
-        //     ),
           ],
         )
        

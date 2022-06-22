@@ -1,9 +1,8 @@
 import 'package:provider/provider.dart';
-
-import '../../screens/manager_screens.dart/repair_card.dart';
-import '../../screens/manager_screens.dart/top_products.dart';
 import 'package:flutter/material.dart';
 import 'chart.dart';
+import '../../screens/manager_screens.dart/repair_card.dart';
+import '../../screens/manager_screens.dart/top_products.dart';
 import './repair_card.dart';
 import '../../providers/users.dart';
 import '../../providers/orders_provider.dart';
@@ -17,7 +16,7 @@ class StatsScreen extends StatelessWidget {
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop()),
-        title: Text('Stats'),
+        title: const Text('Stats'),
       ),
       body:
          SingleChildScrollView(
@@ -27,16 +26,16 @@ class StatsScreen extends StatelessWidget {
             children: <Widget>[
                    Card(
              child:Column(children: [
-               Text('Monthly income',
+               const Text('Monthly income',
                style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
                Chart(),
              ]) ,
                    ),
               
-              RepairCard(),
-              Card(child: Text('Most selled products this month',
+              const RepairCard(),
+              const Card(child: Text('Most selled products this month',
               style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),),
-              TopProductsList(),
+             const  TopProductsList(),
              BottomStats(),
             ],
                   ),
@@ -86,28 +85,28 @@ class _BottomStatsState extends State<BottomStats> {
   }
   @override
   Widget build(BuildContext context) {
-    return  _isLoading? Center(child:CircularProgressIndicator())
+    return  _isLoading? const Center(child:CircularProgressIndicator())
     :Row(
               children: <Widget>[
                
                   Stack(
                     children: [
                       ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 200,maxWidth: 200),
+                        constraints:const BoxConstraints(maxHeight: 200,maxWidth: 200),
                         
                       child: Container(
-                        margin: EdgeInsets.only(left: 5),
+                        margin:const EdgeInsets.only(left: 5),
                         color:  Colors.greenAccent,
                         child:     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                         
-                        Text('Wages this month:',
+                        const Text('Wages this month:',
                         style: TextStyle(fontWeight: FontWeight.w600),),
                         Image.asset('assets/images/wages.png',height: 100,width: 200,),
                         
-                        Text('${wages==null? 0:wages}',style: TextStyle(fontWeight: FontWeight.w600),)
+                        Text('${wages==null? 0:wages}',style:const TextStyle(fontWeight: FontWeight.w600),)
                       ],),
                         ),
                       ),
@@ -117,21 +116,21 @@ class _BottomStatsState extends State<BottomStats> {
                  Stack(
                     children: [
                       ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 200,maxWidth: 200),
+                        constraints:const  BoxConstraints(maxHeight: 200,maxWidth: 200),
                         
                       child: Container(
-                        margin: EdgeInsets.only(left: 5),
+                        margin: const EdgeInsets.only(left: 5),
                         color:  Colors.green[100],
                         child:     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                         
-                        Text('Products bought:',
+                       const  Text('Products bought:',
                         style: TextStyle(fontWeight: FontWeight.w600),),
                         Image.asset('assets/images/truck.png',height: 100,width: 200,),
                         
-                        Text('$income',style: TextStyle(fontWeight: FontWeight.w600),)
+                        Text('${income!.toStringAsFixed(2)}',style: const TextStyle(fontWeight: FontWeight.w600),)
                       ],),
                         ),
                       ),

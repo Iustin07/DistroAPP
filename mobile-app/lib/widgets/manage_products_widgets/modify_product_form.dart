@@ -1,6 +1,7 @@
+import 'package:distroapp/utils/validation.dart';
 import 'package:flutter/material.dart';
-import '../../../model/product.dart';
 import 'package:provider/provider.dart';
+import '../../../model/product.dart';
 import '../../../providers/products.dart';
 
 class ModifyProductForm extends StatefulWidget {
@@ -15,7 +16,6 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
   ProductBuilder? _editedProduct;
   String? unit;
   bool _loading = false;
-  //Product product=ProductBuilder(-1).build();
   final _screenFocus = FocusNode();
   @override
   void dispose() {
@@ -54,11 +54,11 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
       await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text('An error occurred!'),
-          content: Text('Something went wrong.'),
+          title:const Text('An error occurred!'),
+          content: const Text('Something went wrong.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Okay'),
+              child:const  Text('Okay'),
               onPressed: () {
                 Navigator.of(ctx).pop();
               },
@@ -76,7 +76,7 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
   @override
   Widget build(BuildContext context) {
     return _loading
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(),
           )
         : Container(
@@ -96,30 +96,30 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
                         showTextFormField(
                             'Product name', widget.product.productName,
                             (value) {
-                          if (_editedProduct!.productName != value)
-                            _editedProduct!.productName = value;
+                          if (_editedProduct!.productName != value){
+                            _editedProduct!.productName = value;}
                         }),
                         showTextFormField('Producer', widget.product.producer,
                             (value) {
-                          if (_editedProduct!.producer != value)
-                            _editedProduct!.producer = value;
+                          if (_editedProduct!.producer != value){
+                            _editedProduct!.producer = value;}
                         }),
                         Row(
                           children: <Widget>[
-                            Text(
+                            const Text(
                               'Unit measure',
                               style: TextStyle(
                                   color: Colors.white70, fontSize: 16),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 7,
                             ),
                             DropdownButton<String>(
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.white70, fontSize: 16),
                               focusColor: Colors.white60,
-                              dropdownColor: Color.fromARGB(255, 30, 161, 217),
-                              items: <String>['Buc', 'Box', 'But', 'Nav']
+                              dropdownColor:const  Color.fromARGB(255, 30, 161, 217),
+                              items: <String>['Buc', 'Box', 'Pal']
                                   .map((value) {
                                 return DropdownMenuItem(
                                     value: value, child: Text(value));
@@ -127,9 +127,9 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
                               value: unit,
                               onChanged: (item) => setState(() {
                                 unit = item;
-                                _editedProduct!..unitMeasure = unit as String;
+                                _editedProduct!.unitMeasure = unit as String;
                               }),
-                              icon: Icon(Icons.arrow_drop_down_circle),
+                              icon: const Icon(Icons.arrow_drop_down_circle),
                             ),
                           ],
                         ),
@@ -166,9 +166,7 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
                             (value) {
                           _editedProduct!.weight = double.parse(value);
                         }),
-                        SizedBox(
-                          height: 5,
-                        ),
+                        const SizedBox(height: 5,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
@@ -177,10 +175,10 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
                                   _saveProduct(widget.product.productId,
                                       _editedProduct as ProductBuilder);
                                 },
-                                child: Text('Save')),
+                                child: const Text('Save')),
                             ElevatedButton(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: Text('Cancel'))
+                                child: const Text('Cancel'))
                           ],
                         ),
                       ],
@@ -198,7 +196,7 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
     Function saveHandler,
   ) {
     return TextFormField(
-      style: TextStyle(color: Color.fromARGB(255, 250, 250, 250)),
+      style: const TextStyle(color: Color.fromARGB(255, 250, 250, 250)),
       initialValue: initialValue,
       decoration: InputDecoration(
         fillColor: const Color.fromARGB(255, 30, 161, 217),
@@ -209,16 +207,15 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
           borderRadius: BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(color: Colors.black45, width: 2.0),
         ),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
+        focusedBorder:const  OutlineInputBorder(
+            borderRadius:  BorderRadius.all(Radius.circular(20)),
             borderSide: BorderSide(color: Colors.cyanAccent, width: 2.0)),
       ),
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.number,
-      //focusNode: _priceFocusNode,
-      // onFieldSubmitted: (_) {
-      //   FocusScope.of(context).requestFocus();
-      // },
+      validator: (value){
+        return Validator.validateDouble(value);
+      },
       onSaved: (value) => saveHandler(value),
     );
   }
@@ -229,23 +226,20 @@ class _ModifyProductFormState extends State<ModifyProductForm> {
         style: const TextStyle(color: Color.fromARGB(255, 250, 250, 250)),
         initialValue: initialValue,
         decoration: InputDecoration(
-          fillColor: Color.fromARGB(255, 30, 161, 217),
+          fillColor: const Color.fromARGB(255, 30, 161, 217),
           filled: true,
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle:const TextStyle(color: Colors.white),
           labelText: title,
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
             borderSide: BorderSide(color: Colors.black45, width: 2.0),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder:const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              borderSide:
-                  const BorderSide(color: Colors.cyanAccent, width: 2.0)),
+              borderSide: BorderSide(color: Colors.cyanAccent, width: 2.0)),
         ),
         textInputAction: TextInputAction.next,
-        // onFieldSubmitted: (_) {
-        //   FocusScope.of(context).requestFocus();
-        // },
+        validator: (value)=>Validator.validateDouble(value),
         onSaved: (value) => saveHandler(value));
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../model/orderItem.dart';
 import 'package:provider/provider.dart';
+import '../../model/orderItem.dart';
 import '../../providers/orders_provider.dart';
 class AgentOrderProductItem extends StatelessWidget {
    AgentOrderProductItem({Key? key,
@@ -15,17 +15,13 @@ class AgentOrderProductItem extends StatelessWidget {
       key: ValueKey(orderItem.id),
       background: Container(
         color: Theme.of(context).errorColor,
-        child:  const Icon(
-          Icons.delete,
-          color: Colors.white,
-          size: 40,
-        ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         margin: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 4,
         ),
+        child:  const Icon(Icons.delete,color: Colors.white,size: 40, ),
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
@@ -33,17 +29,15 @@ class AgentOrderProductItem extends StatelessWidget {
           context: context,
           builder: (ctx) => AlertDialog(
                 title: const Text('Are you sure?'),
-                content: const Text(
-                  'Do you want to delete this order item?',
-                ),
+                content: const Text('Do you want to delete this order item?', ),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: const Text('No'),
                     onPressed: () {
                       Navigator.of(ctx).pop(false);
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: const Text('Yes'),
                     onPressed: () {
                       Navigator.of(ctx).pop(true);

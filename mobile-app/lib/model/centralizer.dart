@@ -10,7 +10,6 @@ Centralizer({
   required this.date,
   required this.orders
 });
-  //double weight;
   Order get calculatedValuesforValueAndWeight{
     
    final result= orders.reduce((value, element)=>Order.selection(clientId: -1,

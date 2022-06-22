@@ -25,7 +25,7 @@ class AuthScreen extends StatelessWidget {
             ),
           ),
           SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(
@@ -33,8 +33,8 @@ class AuthScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    child: Container(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    child: SizedBox(
                       height: 300,
                       width: 250,
                       child: Image.asset(

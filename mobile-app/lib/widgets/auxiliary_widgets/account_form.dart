@@ -1,9 +1,8 @@
-import 'dart:async';
 
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 import '../../providers/users.dart';
-import 'package:provider/provider.dart';
 import '../../providers/authentification.dart';
 
 class AccountForm extends StatefulWidget {
@@ -57,7 +56,7 @@ class _AccountFormState extends State<AccountForm> {
           if(response=="OK"){
                   Scaffold.of(context).hideCurrentSnackBar();
                   Scaffold.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       backgroundColor: Colors.green,
                       content: Text(
                         'Password was reset sucessfully',
@@ -71,12 +70,12 @@ class _AccountFormState extends State<AccountForm> {
 
           }
       } catch (error) {
-        print(error);
+        throw(error);
       }
       setState(() {
         _loading = false;
       });
-     Future.delayed(Duration(seconds: 2),(){
+     Future.delayed(const Duration(seconds: 2),(){
        Navigator.of(context).popUntil(ModalRoute.withName("/"));
       Provider.of<Authentication>(context, listen: false).logout();
      });
@@ -93,8 +92,8 @@ class _AccountFormState extends State<AccountForm> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('An Error Occurred!', style: TextStyle(color: Colors.white),),
-        content: Text(message, style: TextStyle(color:Colors.white),),
+        title: const Text('An Error Occurred!', style: TextStyle(color: Colors.white),),
+        content: Text(message, style: const TextStyle(color:Colors.white),),
         actions: <Widget>[
           TextButton(
             child: const Text('Ok' , style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
@@ -121,7 +120,7 @@ class _AccountFormState extends State<AccountForm> {
   Widget build(BuildContext context) {
     return Center(
       child: _loading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -132,7 +131,6 @@ class _AccountFormState extends State<AccountForm> {
                 ),
                 child: Form(
                   key: _formAccount,
-                  //wrap with constrined box set height mediaquery height
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -181,12 +179,12 @@ class _AccountFormState extends State<AccountForm> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         obscureText: true,
         decoration: InputDecoration(
-          fillColor: Color.fromARGB(255, 30, 161, 217),
+          fillColor:const  Color.fromARGB(255, 30, 161, 217),
           filled: true,
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: const TextStyle(color: Colors.white),
           labelText: titleLabel,
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -195,7 +193,7 @@ class _AccountFormState extends State<AccountForm> {
           focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               borderSide:
-                  const BorderSide(color: Colors.cyanAccent, width: 2.0)),
+                  BorderSide(color: Colors.cyanAccent, width: 2.0)),
         ),
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.text,

@@ -1,9 +1,9 @@
-import 'package:distroapp/screens/storeman_screens/shipping_screen.dart';
-import 'package:distroapp/widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../providers/transports.dart';
+import '../../utils/validation.dart';
+import '../../widgets/simple_app_bat.dart';
 class AddTransportScreen extends StatelessWidget {
   const AddTransportScreen({Key? key}) : super(key: key);
 static const routeName="/add-transport";
@@ -40,7 +40,9 @@ Map<String,dynamic> _transport={
       'retour':false
     };
   void _saveForm()async{
-    //form validations
+   if(!_transportForm.currentState!.validate()){
+     return;
+   }
     _transportForm.currentState!.save();
   setState(() {
     _loading=true;
@@ -50,7 +52,7 @@ Map<String,dynamic> _transport={
           _transport["retour"]=_isChecked;
         await Provider.of<Transports>(context, listen: false)
             .addTransport(_transport);
-      } catch (error) {
+      } catch (error) { 
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -58,7 +60,7 @@ Map<String,dynamic> _transport={
                 content: const Text('Something went wrong.'),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('Okay'),
+                    child:const Text('Okay'),
                     onPressed: () {
                       Navigator.of(ctx).pop();
                     },
@@ -86,10 +88,9 @@ Map<String,dynamic> _transport={
   Widget build(BuildContext context) {
     return _loading?const Center(child: CircularProgressIndicator(),) 
     :Container(
-              padding: EdgeInsets.only(top: 10,left: 10,right: 10),
-              margin: EdgeInsets.only(left:20,right: 20,top: 20),
+              padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+              margin:const EdgeInsets.only(left:20,right: 20,top: 20),
               decoration: BoxDecoration(
-               //color: Colors.amber,
                 borderRadius: BorderRadius.circular(5),
               ),
                   
@@ -99,28 +100,33 @@ Map<String,dynamic> _transport={
                         children: [
                           Image.asset('assets/images/shipping_icon2.png'),
                        Expanded(
-                        
-                                
-
                                   child: SingleChildScrollView(
                                     child: Form(
                                       key: _transportForm,
                                         child: Column(
                                           children: <Widget>[
-                                            CustomTextField('Producer',_transport["producer"],2,TextInputType.text,(value){
+                                            CustomTextField('Producer',_transport["producer"],2,TextInputType.text,
+                                            (value)=>Validator.validateGeneral(value),
+                                            (value){
                                               _transport["producer"]=value;
                                             }),
-                                            CustomTextField('Driver name',_transport["driverName"],1,TextInputType.text,(value){
+                                            CustomTextField('Driver name',_transport["driverName"],1,TextInputType.text,
+                                             (value)=>Validator.validateGeneral(value),
+                                            (value){
                                                _transport["driverName"]=value;
                                             }),
-                                            CustomTextField('Driver phone number',_transport["driverPhoneNumber"],1,TextInputType.text,(value){
+                                            CustomTextField('Driver phone number',_transport["driverPhoneNumber"],1,TextInputType.text,
+                                            (value)=>Validator.validatePhoneNumber(value),
+                                            (value){
                                                _transport["driverPhoneNumber"]=value;
                                             }),
-                                            CustomTextField('Truck registration number', _transport["truckRegistrationNumber"],1,TextInputType.text,(value){
+                                            CustomTextField('Truck registration number', _transport["truckRegistrationNumber"],1,TextInputType.text,
+                                            (value)=>Validator.validateRegisterNumber(value),
+                                            (value){
                                                _transport["truckRegistrationNumber"]=value;
                                             }),
                                             Row(children: <Widget>[
-                                              Text('Retour',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
+                                              const Text('Retour',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
                                               Checkbox(
       checkColor: Colors.yellow,
       activeColor: Colors.green,
@@ -159,15 +165,12 @@ Map<String,dynamic> _transport={
               ),
             ],
           ),
-        ),
-                                             
-                                            
-                                             
+        ),       
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: <Widget>[
-                                                 ElevatedButton(onPressed: ()=>Navigator.of(context).pop(), child: Text('Cancel')),
-                                                ElevatedButton(onPressed: ()=>_saveForm(), child: Text('Add')),
+                                                 ElevatedButton(onPressed: ()=>Navigator.of(context).pop(), child: const Text('Cancel')),
+                                                ElevatedButton(onPressed: ()=>_saveForm(), child: const Text('Add')),
                                                
                                               ],
                                             ),
@@ -192,16 +195,16 @@ Map<String,dynamic> _transport={
     
     
   }
-  Widget CustomTextField(String title,dynamic initialValue,int lines,TextInputType inputType,Function saveHandler) {
+  Widget CustomTextField(String title,dynamic initialValue,int lines,TextInputType inputType,Function validationHandler,Function saveHandler) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: TextFormField(
                       initialValue: initialValue.toString(),
                       maxLines: lines,
                       decoration:  InputDecoration(
-                        fillColor:Color.fromARGB(238, 255, 255, 255),
+                        fillColor:const Color.fromARGB(238, 255, 255, 255),
                         filled: true,
-                        labelStyle: TextStyle(color:Color.fromRGBO(72, 40, 74, 1),
+                        labelStyle: const TextStyle(color:Color.fromRGBO(72, 40, 74, 1),
                         fontWeight: FontWeight.bold
                         ),
                         labelText: title,
@@ -222,6 +225,7 @@ Map<String,dynamic> _transport={
                       FocusScope.of(context).unfocus();
                     });
                 },
+                validator: (value)=>validationHandler(value),
                       onSaved: (value)=>saveHandler(value),
                     ),
     );

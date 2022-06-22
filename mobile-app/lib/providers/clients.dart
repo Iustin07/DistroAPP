@@ -56,13 +56,12 @@ class Clients with ChangeNotifier{
     try {
       final response =
           await http.post(url,
-          
            headers: {'Content-type':"application/json",
              'Authorization': 'Bearer $_token'},
             body: json.encode(jsonData), 
-             );
-      print(response.body);  
+             ); 
       notifyListeners();
+      return response.body;
     } catch (error) {
       throw (error);
     }
@@ -100,8 +99,12 @@ final url = Uri.parse('$serverUrl/clients/$clientId');
       _clients[clientIndex]=Client.mapJsonToClient(client);
        notifyListeners();}
     } catch (error) {
-      print(error);
       throw error;
     }
+  }
+  void clear(){
+    if (!_clients.isEmpty)
+    _clients.clear();
+    
   }
 }

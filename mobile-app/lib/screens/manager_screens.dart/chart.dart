@@ -1,22 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './chart_bar.dart';
-import 'dart:math';
 import '../../providers/stats_provider.dart';
-class Chart extends StatelessWidget {
+class Chart extends StatefulWidget {
 
   Chart({Key? key}) : super(key: key);
-Map<String,double> _stats={};
 
   @override
+  State<Chart> createState() => _ChartState();
+}
+
+class _ChartState extends State<Chart> {
+Map<String,double> _stats={};
+bool _loading=false;
+bool _init=true;
+double? maxSpending;
+@override
+  void didChangeDependencies() {
+    if(_init){
+      setState(() {
+        _loading=true;
+      });
+ Provider.of<Stats>(context,listen: false).getMonthlyStat().then((value) {
+   setState(() {
+     _loading=false;
+     _stats=Provider.of<Stats>(context,listen: false).getMonthlyStats;
+     maxSpending=Provider.of<Stats>(context,listen: false).maxSpending;
+   });
+ });
+    }
+    _init=false;
+    super.didChangeDependencies();
+  }
+  @override
   Widget build(BuildContext context) {
-    Provider.of<Stats>(context).readJson();
-     final _stats=Provider.of<Stats>(context).getMonthlyStats;
-     final maxSpending=Provider.of<Stats>(context,listen: false).maxSpending;
-    return Card(
+    return _loading? const CircularProgressIndicator():Card(
       elevation: 6,
-      //margin: EdgeInsets.all(15),
-      child: Padding(padding: EdgeInsets.all(5),
+      child: Padding(padding: const EdgeInsets.all(5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: _stats.entries.map((entry) {
@@ -27,7 +47,7 @@ Map<String,double> _stats={};
                 amount:entry.value,
                 percentageOfTotal: maxSpending==0.0
                     ? 0.0
-                    :  entry.value/maxSpending,
+                    :  entry.value/maxSpending!,
               ),
             );
           }).toList(),

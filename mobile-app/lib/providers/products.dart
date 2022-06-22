@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import '../model/product.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import '../model/product.dart';
 import '../properties.dart';
 class Products with ChangeNotifier {
   String _token;
@@ -16,7 +16,6 @@ class Products with ChangeNotifier {
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Bearer $_token'});
-      //final extractedData = json.decode(response.body);
       Iterable data = json.decode(response.body);
       _products = data.map((e) => Product.getProductFromJsom(e)).toList();
       notifyListeners();
@@ -54,7 +53,6 @@ class Products with ChangeNotifier {
       _products.add(createdProduct);
       notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
@@ -78,7 +76,6 @@ class Products with ChangeNotifier {
         print('Could not delete product.');
       }
     } catch (error) {
-      print(error);
       throw error;
     }
     existingProduct = ProductBuilder(-1).build();
@@ -96,7 +93,6 @@ final url = Uri.parse('$serverUrl/products/$id');
       _products[prodIndex]=product;
        notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
 

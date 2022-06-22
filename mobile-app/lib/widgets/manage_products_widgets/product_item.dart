@@ -38,7 +38,7 @@ class ProductItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Text('Stock: ${product.stock}'),
+                        Text('Stock: ${product.stock.toStringAsFixed(2)}'),
                         Text('Price: ${product.priceChoice}'),
                         Text(product.unitMeasure),
                         Text(product.category)

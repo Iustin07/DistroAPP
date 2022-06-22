@@ -1,10 +1,10 @@
-import 'package:distroapp/model/review.dart';
-import '../../model/transport.dart';
-import 'package:provider/provider.dart';
-import '../../model/transport_item.dart';
-import 'package:distroapp/providers/transport_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
+import '../../model/review.dart';
+import '../../model/transport.dart';
+import '../../model/transport_item.dart';
+import '../../providers/transport_cart.dart';
 import './hero_review_widget.dart';
 import '../../providers/products.dart';
 import '../../model/product.dart';
@@ -59,7 +59,7 @@ class _BodyTransportDetailsState extends State<BodyTransportDetailsWaiting> {
                 children: [
                   Image.asset('assets/images/box-512.png',height: 100,),
                   ElevatedButton(
-                      child: Text('ADD PRODUCT'),
+                      child: const Text('ADD PRODUCT'),
                       onPressed: () => showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -72,20 +72,20 @@ class _BodyTransportDetailsState extends State<BodyTransportDetailsWaiting> {
                   Image.asset('assets/images/rating2.png',height: 100,),
                   ElevatedButton(
                      
-                      child: Text('ADD REVIEW'),
+                      child:const  Text('ADD REVIEW'),
                       onPressed: () => showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AddReviewDialog();
+                            return const AddReviewDialog();
                           })),
                 ],
               ),
             ]),
         transportCart!.review == null
-            ? Text('no reviews')
+            ? const Text('no reviews')
             : HeroReviewWidget(review:transportCart?.review as Review, transportId: widget.transport.idTrasnport),
         transportCart!.transportItems.isEmpty
-            ? Text('no products yet')
+            ? const Text('no products yet')
             : Expanded(
                 child: ListView.builder(
                   itemCount: transportCart!.transportItems.length,
@@ -103,9 +103,7 @@ class _BodyTransportDetailsState extends State<BodyTransportDetailsWaiting> {
                             children: <Widget>[
                               Text(
                                   '${transportCart!.transportItems[index].productQuantity} ${transportCart!.transportItems[index].unityMeasure}'),
-                              SizedBox(
-                                width: 15,
-                              ),
+                              const SizedBox(width: 15, ),
                               Text(
                                   '${transportCart!.transportItems[index].productValue} RON'),
                             ],
@@ -139,14 +137,14 @@ class DetailsReview extends StatelessWidget {
                 width: 200,
                 child: Column(
                   children: [
-                    Text('Reason'),
+                    const Text('Reason'),
                     Text(
                       softWrap: true,
                       review.textReview as String,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                          const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
-                    Text('Rating'),
+                    const Text('Rating'),
                     RatingBar(
                         initialRating: review.rating as double,
                         direction: Axis.horizontal,
@@ -174,7 +172,7 @@ class DetailsReview extends StatelessWidget {
 
 /* #region Add product */
 class AddDialog extends StatefulWidget {
-  AddDialog({Key? key}) : super(key: key);
+ const  AddDialog({Key? key}) : super(key: key);
 
   @override
   State<AddDialog> createState() => _AddDialogState();
@@ -210,8 +208,7 @@ class _AddDialogState extends State<AddDialog> {
   final _formTransportProduct = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return _loading
-                      ? CircularProgressIndicator():AlertDialog(
+    return AlertDialog(
       scrollable: true,
       title: const Text('Add product'),
       content: Padding(
@@ -227,7 +224,8 @@ class _AddDialogState extends State<AddDialog> {
                     width: 10,
                   ),
                   
-                       DropdownButton<Product>(
+                      _loading
+                      ?const  CircularProgressIndicator(): DropdownButton<Product>(
                           menuMaxHeight: 300,
                           hint: const Text('product'),
                           value: dropdownValue,
@@ -252,10 +250,8 @@ class _AddDialogState extends State<AddDialog> {
               ),
               Row(
                 children: [
-                  Text('Measure unit'),
-                  SizedBox(
-                    width: 10,
-                  ),
+                  const Text('Measure unit'),
+                  const SizedBox(  width: 10, ),
                   DropdownButton<String>(
                     hint: const Text('unit measure'),
                     value: unit,
@@ -277,7 +273,7 @@ class _AddDialogState extends State<AddDialog> {
                 ],
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'quantity',
                   icon: Icon(Icons.add_moderator),
                 ),
@@ -287,7 +283,7 @@ class _AddDialogState extends State<AddDialog> {
                 keyboardType: TextInputType.number,
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'value',
                   icon: Icon(Icons.attach_money),
                 ),
@@ -301,8 +297,8 @@ class _AddDialogState extends State<AddDialog> {
         ),
       ),
       actions: [
-        RaisedButton(
-            child: Text("Add"),
+        TextButton(
+            child:const Text("Add"),
             onPressed: () {
               _saveProduct();
             })
@@ -311,9 +307,7 @@ class _AddDialogState extends State<AddDialog> {
   }
 
   void _saveProduct() {
-    print('saved form was called');
     _formTransportProduct.currentState!.save();
-    print('$quantity $price $unit');
     Navigator.of(context).pop();
     if(dropdownValue!=null){
     cart!.addProduct(TransportItem.cart(
@@ -329,7 +323,7 @@ class _AddDialogState extends State<AddDialog> {
 /* #endregion*/
 /////review
 class AddReviewDialog extends StatefulWidget {
-  AddReviewDialog({Key? key}) : super(key: key);
+ const AddReviewDialog({Key? key}) : super(key: key);
 
   @override
   State<AddReviewDialog> createState() => _AddReviewDialogState();
@@ -339,17 +333,14 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
   bool _init = true;
   bool _loading = false;
   TransportCart? cart;
-  //List<Product> _products = [];
   @override
   void didChangeDependencies() {
     if (_init) {
       setState(() {
         _loading = true;
       });
-      // Provider.of<Products>(context).fetchAndSetProducts();
       setState(() {
         cart = Provider.of<TransportCart>(context);
-        // _products = Provider.of<Products>(context).products;
         _loading = false;
       });
     }
@@ -373,7 +364,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
             children: <Widget>[
               TextFormField(
                 maxLines: 6,
-                decoration: InputDecoration(
+                decoration:const  InputDecoration(
                   labelText: 'Description',
                   icon: Icon(
                     Icons.text_snippet_sharp,
@@ -385,9 +376,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
                 },
                 keyboardType: TextInputType.multiline,
               ),
-              SizedBox(
-                height: 20,
-              ),
+              const SizedBox( height: 20,),              
               //cod preluat de pe https://www.kindacode.com/article/how-to-implement-star-rating-in-flutter/
               const Text(
                 'Give a rate',
@@ -432,8 +421,8 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
         ),
       ),
       actions: [
-        RaisedButton(
-            child: Text("Add"),
+        TextButton(
+            child: const Text("Add"),
             onPressed: () {
               _saveReview();
             })
@@ -443,7 +432,6 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
 
   void _saveReview() {
     _formReview.currentState!.save();
-    print('$_description');
     Navigator.of(context).pop();
     cart!.addReview(
         Review.custom(textReview: _description, rating: _ratingValue));

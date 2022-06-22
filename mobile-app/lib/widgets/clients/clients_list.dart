@@ -54,7 +54,8 @@ class _ClientsListState extends State<ClientsList> {
           height: MediaQuery.of(context).size.height*0.8,
          child:_clients.isEmpty?const Center(child: Text('there are no clients loaded yet'),) :ListView.builder(
        itemCount: _clients.length,
-       itemBuilder: (ctx,index)=>widget.enabled?ClientItem(key:ValueKey(_clients[index].id.toString()),client:_clients[index],waiting:false):
+       itemBuilder: (ctx,index)=>widget.enabled?
+       ClientItem(key:ValueKey(_clients[index].id.toString()),client:_clients[index],waiting:false):
        ClientItem(key:ValueKey(_clients[index].id.toString()),client:_clients[index],waiting:true),
         ),
         )

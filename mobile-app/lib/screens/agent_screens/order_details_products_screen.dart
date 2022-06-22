@@ -1,7 +1,7 @@
-import 'package:distroapp/screens/agent_screens/agent_order_item.dart';
-import 'package:distroapp/widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/simple_app_bat.dart';
 import '../../model/order.dart';
+import './agent_order_item.dart';
 class OrderDetailsProducts extends StatefulWidget {
   static const routeName="/agent-order-details";
   const OrderDetailsProducts({Key? key,
@@ -12,6 +12,12 @@ class OrderDetailsProducts extends StatefulWidget {
 }
 
 class _OrderDetailsProductsState extends State<OrderDetailsProducts> {
+  bool _init=true;
+  @override
+  void didChangeDependencies() {
+   
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
       final Order order=ModalRoute.of(context)?.settings.arguments as Order;
@@ -27,23 +33,13 @@ class _OrderDetailsProductsState extends State<OrderDetailsProducts> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Chip(
-                            label: Text(
-                              '${order.totalWeight!.toStringAsFixed(2)} kg',
-                              style: const TextStyle(
-                                  //color: Theme.of(context).primaryTextTheme.title.color,
-                                  ),
-                            ),
-                            backgroundColor:Colors.amber,
+                    Chip( 
+                      label: Text('${order.totalWeight!.toStringAsFixed(2)} kg',),
+                      backgroundColor:Colors.amber,
                           ),
-                       Chip(
-                            label: Text(
-                              '${order.orderPaymentValue!.toStringAsFixed(2)} RON',
-                              style: const TextStyle(
-                                  //color: Theme.of(context).primaryTextTheme.title.color,
-                                  ),
-                            ),
-                            backgroundColor: Colors.amber,
+                    Chip(
+                      label: Text( '${order.orderPaymentValue!.toStringAsFixed(2)} RON',),
+                      backgroundColor: Colors.amber,
                           ),
               ],),
               Expanded(child:
@@ -55,8 +51,6 @@ class _OrderDetailsProductsState extends State<OrderDetailsProducts> {
               ),
               ],
             )
-            
-          
           ),
         ) ,
         );

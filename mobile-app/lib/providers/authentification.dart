@@ -34,11 +34,6 @@ int get userId{
 }
 Future<void> _authenticate(String username, String password) async{
 final url=Uri.parse('$serverUrl/authenticate');
-print('${username} ${password}');
-print(json.encode({
-  'userName':username.toString(),
-  'userPassword':password.toString(),
-}));
  final headers = {"Content-type": "application/json"};
 final response=await http.post(url,
 body: json.encode({
@@ -48,11 +43,7 @@ body: json.encode({
 headers: headers
 ); 
 _token=jsonDecode(response.body)['token'] as String;
-print(json.decode(response.body));
 Map<String,dynamic> payload=JwtDecoder.decode(_token as String);
-// for(var  entry in payload.entries){
-// print('${entry.value} ${entry.value.runtimeType}');
-// }
 _userid=payload["id"];
 _role=payload["role"];
 _expiryDate=DateTime.now().add(

@@ -1,8 +1,9 @@
+import '../../widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import '../../model/lost.dart';
 import 'package:provider/provider.dart';
+import '../../model/lost.dart';
+
 import '../../providers/losts.dart';
 class ManageLostsManagerScreen extends StatelessWidget {
   const ManageLostsManagerScreen({Key? key}) : super(key: key);
@@ -11,15 +12,7 @@ class ManageLostsManagerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop()),
-        title: const Text('Manage losts'),
-        actions: <Widget>[
-          IconButton(onPressed: () {}, icon: const Icon(Icons.add))
-        ],
-      ),
+      appBar:SimpleAppBar(title: 'Manage Losts',),
       body: LostsMainWidget(),
     );
     ;
@@ -43,7 +36,12 @@ class _LostsMainWidgetState extends State<LostsMainWidget> {
       constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
       child: Column(
         children: <Widget>[
-          const Text('Select period'),
+         const  SizedBox(height: 10,),
+          const Text('Select period',style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500
+          ),),
           GridView.count(
   primary: false,
   padding: const EdgeInsets.all(20),
@@ -54,24 +52,24 @@ class _LostsMainWidgetState extends State<LostsMainWidget> {
   children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 214, 104, 83),
+                //color: const Color.fromARGB(255, 214, 104, 83),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(10)),
             margin: const EdgeInsets.only(left: 30, right: 30),
-            height: 50,
+            height: 30,
             child: Column(
               children: <Widget>[
-                Expanded(
-                  child: Text(
+              const  Expanded(child: Icon(Icons.calendar_month,size: 50,),),
+                   Text(
                     _firstDate == null
                         ? 'No Date Chosen!'
                         : 'Picked Date: ${DateFormat.yMd().format(_firstDate as DateTime)}',
-                  ),
-                ),
+                  style:const TextStyle(color: Colors.white)),
+                
                 TextButton(
-                  child: Text(
+                  child:const Text(
                     'Choose Date',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -97,24 +95,24 @@ class _LostsMainWidgetState extends State<LostsMainWidget> {
           ),
           Container(
             decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 214, 104, 83),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(10)),
             margin: const EdgeInsets.only(left: 30, right: 30),
-            height: 50,
+            height: 30,
             child: Column(
               children: <Widget>[
-                Expanded(
-                  child: Text(
+               const  Expanded(
+                  child:  Icon(Icons.calendar_month_outlined,size: 50,),
+                ),
+                Text(
                     _secondDate == null
                         ? 'No Date Chosen!'
                         : 'Picked Date: ${DateFormat.yMd().format(_secondDate as DateTime)}',
-                  ),
-                ),
+                  style: const TextStyle(color: Colors.white),),
                 TextButton(
-                  child: Text(
+                  child: const Text(
                     'Choose Date',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -141,12 +139,11 @@ class _LostsMainWidgetState extends State<LostsMainWidget> {
           ),]
           ),
           ElevatedButton(onPressed: () {
-            print('show called');
               setState(() {
                 if(_firstDate!=null && _secondDate!=null)
                 _showList=false;
               });
-          }, child: Text('Show')),
+          }, child:const  Text('Show')),
           _showList? Container():ShowLostsList(firstDate: _firstDate.toString().split(" ")[0], secondDate: _secondDate.toString().split(" ")[0])
         ],
       ),
@@ -193,11 +190,15 @@ class _ShowLostsListState extends State<ShowLostsList> {
             child: ListView.builder(
                 itemCount: _losts.length,
                 itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(3.0),
                       child: ListTile(
-                        tileColor: Colors.purple,
+                                   shape:RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Colors.black),
+          ),
+                        tileColor:const  Color.fromRGBO(155, 89, 182, 1),
                         title: Text(_losts[index].product!.productName),
-                        trailing: Text(_losts[index].quantity.toString()),
+                        trailing: Text('${_losts[index].quantity.toString()} ${_losts[index].product!.unitMeasure}'),
                         subtitle: Text(_losts[index].dateOfLost.toString()),
                       ),
                     ),

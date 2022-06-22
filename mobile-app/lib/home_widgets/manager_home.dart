@@ -3,6 +3,7 @@ import '../screens/manager_screens.dart/stats_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/grid_item.dart';
 import '../screens/manage_employees_screen.dart';
+import '../screens/manage_clients.dart';
 class ManagerHome extends StatefulWidget {
   const ManagerHome({Key? key}) : super(key: key);
 
@@ -31,6 +32,13 @@ class _ManagerHomeState extends State<ManagerHome> {
             iconp: Icons.book,
             onTapHandler: ()=>Navigator.of(context).pushNamed(ManageLostsManagerScreen.routeName),
               ),
+                  GridItem(
+               itemTitle: 'Manage clients',
+               color:const Color.fromARGB(255,250,250,255),
+            iconp: Icons.business_center,
+         
+            onTapHandler: ()=>Navigator.of(context).pushNamed(ManageClientsScreen.routeName),
+     ),
   
     
          ],

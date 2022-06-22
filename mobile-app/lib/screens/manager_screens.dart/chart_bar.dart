@@ -36,7 +36,7 @@ class ChartBar extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey, width: 1.0),
-                  color: Color.fromARGB(255, 245, 243, 243),
+                  color: const Color.fromARGB(255, 245, 243, 243),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -53,9 +53,7 @@ class ChartBar extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: 4,
-        ),
+        SizedBox(height: 4,),
         Text(
           label.substring(0, 3),
         ),

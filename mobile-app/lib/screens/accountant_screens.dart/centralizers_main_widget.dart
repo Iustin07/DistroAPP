@@ -1,11 +1,10 @@
-import '../../model/custom_centralizer.dart';
-import './order_check_card.dart';
-import 'package:flutter/material.dart';
-import '../../model/order.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import '../../model/custom_centralizer.dart';
+import './order_check_card.dart';
+import '../../model/order.dart';
 import '../../providers/orders_provider.dart';
-import '../agent_screens/order_card.dart';
 import '../../model/custom_employe.dart';
 import '../../providers/users.dart';
 class CentralizerMainWidget extends StatefulWidget {
@@ -28,7 +27,6 @@ class _CentralizerMainWidgetState extends State<CentralizerMainWidget> {
   bool _loading=false;
   @override
   void dispose() {
-
     super.dispose();
   }
   @override
@@ -67,10 +65,11 @@ class _CentralizerMainWidgetState extends State<CentralizerMainWidget> {
                 color:const Color.fromARGB(255, 214, 104, 83),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(10)),
-            margin: const EdgeInsets.only(top: 10,bottom: 10,left: 20,right: 20),
+            margin: const EdgeInsets.only(top: 10,bottom: 10,left: 25,right: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                const Icon(Icons.person_pin_sharp),
                 const Text(
                   'Select agent',
                   style: TextStyle(
@@ -115,14 +114,14 @@ class _CentralizerMainWidgetState extends State<CentralizerMainWidget> {
                   ),
                 ),
                 TextButton(
-                  child: Text(
+                  onPressed: _presentDatePicker,
+                  child: const Text(
                     'Choose Date',
-                    style:const  TextStyle(
+                    style:TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onPressed: _presentDatePicker,
                 ),
               ],
             ),
@@ -198,13 +197,15 @@ class _CentralizerMainWidgetState extends State<CentralizerMainWidget> {
            backgroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromRGBO(192, 57, 43, 1.0)),),
           
-          onPressed: (){}, child: Text('${cart.totalAmount.toStringAsFixed(2)} RON', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
+          onPressed: (){}, child: 
+          
+          Text('${cart.totalAmount.toStringAsFixed(2)} RON', style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
                TextButton(
           style: ButtonStyle(elevation: MaterialStateProperty.all<double>(5.0),
            backgroundColor: MaterialStateProperty.all<Color>(
                          const  Color.fromRGBO(192, 57, 43, 1.0)),),
           
-          onPressed: (){}, child: Text('${cart.totalWeight.toStringAsFixed(2)} kg', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
+          onPressed: (){}, child: Text('${cart.totalWeight.toStringAsFixed(2)} kg', style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),),
         
       ],
     );
@@ -212,9 +213,7 @@ class _CentralizerMainWidgetState extends State<CentralizerMainWidget> {
  Widget displayList() {
     return Expanded(child:
        _orders.isEmpty
-          ? Center(
-              child:  const Text('There are is no request yet'),
-            )
+          ? const Center(child: Text('There are is no request yet'),)
           :  Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(

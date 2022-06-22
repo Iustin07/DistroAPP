@@ -1,10 +1,7 @@
-import 'package:distroapp/model/cart.dart';
-import 'package:distroapp/model/custom_centralizer.dart';
-import 'package:distroapp/providers/centralizers_provider.dart';
-
-import '../../model/centralizer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../model/custom_centralizer.dart';
+
 class OrderCheckedCard extends StatefulWidget {
   OrderCheckedCard({Key? key,
   required this.orderId,
@@ -40,12 +37,12 @@ class _OrderCheckedCardState extends State<OrderCheckedCard> {
     return 
                Card(
                   child: CheckboxListTile(
-                    title: Text('${widget.clientName}'),
+                    title: Text('${widget.clientName}',style:const TextStyle(fontWeight: FontWeight.w600)),
                     tileColor: const  Color.fromARGB(255,214,104,83),
                     activeColor: Colors.amber,
                     subtitle: Row(
                       children: <Widget>[
-                        Text('${widget.paymentValue} RON'),
+                        Text('${widget.paymentValue} RON',style:const TextStyle(fontWeight: FontWeight.w500),),
                         const SizedBox(width: 10,),
                         Text('${widget.totalWeight} kg'),
                       ],
@@ -55,7 +52,7 @@ class _OrderCheckedCardState extends State<OrderCheckedCard> {
                        setState(() {
                       if(option==true && value==false){
                           centralizer!.removeItem(widget.orderId);
-                          
+                          option=value;
                         } 
                         if(value ==true){
                          centralizer!.addItem(widget.orderId,widget.totalWeight,widget.paymentValue ); 
@@ -63,10 +60,8 @@ class _OrderCheckedCardState extends State<OrderCheckedCard> {
                         Scaffold.of(context).hideCurrentSnackBar();
                     Scaffold.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          'Added order to centralizer',
-                        ),
-                        duration: Duration(seconds: 1),
+                        content: const Text( 'Added order to centralizer',),
+                        duration: const Duration(seconds: 1),
                         action: SnackBarAction(
                           label: 'UNDO',
                           onPressed: () {

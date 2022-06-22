@@ -1,6 +1,7 @@
-import 'package:distroapp/screens/storeman_screens/transports_main_widget.dart';
-import 'package:distroapp/widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
+import './transports_main_widget.dart';
+import '../../widgets/simple_app_bat.dart';
+
 class WaitingTransportsScreen extends StatelessWidget {
   const WaitingTransportsScreen({Key? key}) : super(key: key);
 static const routeName="/waiting-transports";

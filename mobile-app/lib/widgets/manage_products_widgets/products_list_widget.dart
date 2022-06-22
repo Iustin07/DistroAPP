@@ -45,11 +45,10 @@ Provider.of<Products>(context).fetchAndSetProducts().then((_) {
   @override
   Widget build(BuildContext context) {
      _products=Provider.of<Products>(context).products;
-    return _loading? Center(child: CircularProgressIndicator(),):
+    return _loading?const  Center(child: CircularProgressIndicator(),):
      SingleChildScrollView(
          child: ConstrainedBox(
            constraints: BoxConstraints(maxHeight:MediaQuery.of(context).size.height*0.85 ),
-          //height: MediaQuery.of(context).size.height*0.8,
          child: ListView.builder(
        itemCount: _products.length,
        itemBuilder: (ctx,index)=>ProductItem(key:ValueKey(_products[index].productId.toString()),product: _products[index]), 

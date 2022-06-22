@@ -1,7 +1,6 @@
-import '../widgets/clients/waiting_clients.dart';
-
-import '../widgets/clients/add_client.dart';
 import 'package:flutter/material.dart';
+import '../widgets/clients/waiting_clients.dart';
+import '../widgets/clients/add_client.dart';
 import '../widgets/clients/clients_list.dart';
 class ManageClientsScreen extends StatelessWidget {
   const ManageClientsScreen({Key? key}) : super(key: key);
@@ -20,8 +19,8 @@ static const routeName='/clients';
           , icon: Icon(Icons.add))
         ],
         ),
-      body:  Padding(
-    padding: const EdgeInsets.all(8.0),
+      body:  const Padding(
+    padding:  EdgeInsets.all(8.0),
     child: ClientsList(enabled: true,),
   ),
       );

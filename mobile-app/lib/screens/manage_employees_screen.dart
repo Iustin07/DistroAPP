@@ -1,9 +1,9 @@
-import '../widgets/employee/employe_details.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import '../widgets/employee/employe_details.dart';
 import '../model/custom_employe.dart';
 import '../providers/users.dart';
 import '../screens/add_employee_screen.dart';
-import 'package:flutter/material.dart';
 
 enum ChoseWidget { DEFAULT, SEARCH }
 
@@ -81,7 +81,7 @@ class _ManageEmployeScreenState extends State<ManageEmployeScreen> {
           color: Theme.of(context).primaryColor,
         ),
         child: _loading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : getCustomContainerEmploye(),
@@ -152,14 +152,14 @@ class _ManageEmployeScreenState extends State<ManageEmployeScreen> {
       title: const Text('Manage employee'),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.search),
+          icon:const  Icon(Icons.search),
           onPressed: () => setState(() {
             selectedWidget = ChoseWidget.SEARCH;
             _isSearching = true;
           }),
         ),
         IconButton(
-            icon: Icon(Icons.add),
+            icon:const  Icon(Icons.add),
             onPressed: () =>
                 Navigator.of(context).pushNamed(AddEmployerScreen.routeName)),
       ],
@@ -170,14 +170,14 @@ class _ManageEmployeScreenState extends State<ManageEmployeScreen> {
     return AppBar(
       leading: IconButton(icon: const Icon(Icons.search), onPressed: () {}),
       title: TextField(
-        style: TextStyle(color: Colors.white, fontSize: 18),
+        style: const TextStyle(color: Colors.white, fontSize: 18),
         onChanged: (value) => _searchEmployee(value),
         decoration: const InputDecoration(
             labelText: 'Search', suffixIcon: Icon(Icons.search)),
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.close),
+          icon:const  Icon(Icons.close),
           onPressed: () => setState(() {
             selectedWidget = ChoseWidget.DEFAULT;
             _isSearching = false;

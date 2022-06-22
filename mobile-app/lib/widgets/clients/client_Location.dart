@@ -1,9 +1,10 @@
+import 'package:distroapp/providers/authentification.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:provider/provider.dart';
 class ClientLocation extends StatelessWidget {
-  ClientLocation({Key? key,
+const  ClientLocation({Key? key,
  this.clientName,
  this.address,
  this.longitude,
@@ -17,23 +18,22 @@ class ClientLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      //backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(title: Text(clientName as String),),
-    body: Container(
-      alignment: Alignment.center,
-      child:Stack(children: [
+    // body: Container(
+    //   alignment: Alignment.center,
+    //   child:Stack(children: [
           
-         Image.asset('assets/images/map.png'),
-         Positioned(
-           left: 40,
-           top: 10,
-           child:
-           Text(address as String, style:const TextStyle(backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
-             fontWeight: FontWeight.w600),)),
-      ],) 
+    //      Image.asset('assets/images/map.png'),
+    //      Positioned(
+    //        left: 40,
+    //        top: 10,
+    //        child:
+    //        Text(address as String, style:const TextStyle(backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+    //          fontWeight: FontWeight.w600),)),
+    //   ],) 
      
-    ),
-    //body:ClientMapRender(address: address,clientName: clientName,latitude: latitude,longitude: longitude,),
+    // ),
+    body:ClientMapRender(address: address,clientName: clientName,latitude: latitude,longitude: longitude,),
     );
   }
 }
@@ -62,18 +62,28 @@ class _ClientMapRenderState extends State<ClientMapRender> {
     Position? position;
 bool _init=true;
 bool _laoding=false;
+String userRole='';
 @override
 void didChangeDependencies() {
 if(_init){
   setState(() {
     _laoding=true;
+     userRole=Provider.of<Authentication>(context).getRole;
   });
+  if(userRole=='driver'){
+    
    _determinePosition().then((value) {
     setState(() {
       position=value;
       _laoding=false;
     });
   });
+  print('driver is on');
+  }else{
+    setState(() {
+      _laoding=false;
+    });
+  }
 }
 
  _init=false;
@@ -102,9 +112,8 @@ if(_init){
     return _laoding?const Center(child: CircularProgressIndicator(),): GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition:  CameraPosition(
-            //target: LatLng(position!.latitude,position!.longitude),
-            target: LatLng(widget.latitude as double ,widget.longitude as double),
-            zoom: 15,
+            target: userRole=='driver'? LatLng(position!.latitude,position!.longitude):LatLng(widget.latitude as double ,widget.longitude as double),
+            zoom: 8,
           ),
           markers: _markers.values.toSet(),
         );
@@ -131,6 +140,16 @@ if(_init){
     return Future.error(
       'Location permissions are permanently denied, we cannot request permissions.');
   } 
-  return await Geolocator.getCurrentPosition();
+      return Position(
+        longitude:26.874545 ,
+        latitude: 47.08796,
+        timestamp: DateTime.now(),
+        accuracy: 50,
+        altitude: 300,
+        heading: 34.8900,
+        speed: 0.5,
+        speedAccuracy: 0.7);
+  
+  //return await Geolocator.getCurrentPosition();
 }
 }

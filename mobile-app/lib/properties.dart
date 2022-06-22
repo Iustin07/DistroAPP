@@ -1,1 +1,1 @@
-final serverUrl='http://192.168.0.103:3000';
+const serverUrl='http://192.168.0.103:3000';

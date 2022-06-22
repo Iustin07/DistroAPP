@@ -1,10 +1,9 @@
-import '../properties.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../properties.dart';
 import '../model/order.dart';
 import '../model/orderItem.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import '../model/cart.dart' show CartItem;
 class Orders with ChangeNotifier{
 List<Order> _orders=[];
@@ -55,7 +54,6 @@ notifyListeners();
   Future <dynamic> addOrder(Iterable<CartItem> items, double totalAmount, double totalWeight, int clienId) async{
     final url=Uri.parse("$serverUrl/orders");
     List<OrderItem> products=items.map((e) => OrderItem.custom(opProductId: e.productId,productUnits: e.quantity)).toList();
-    print(products);
     final order=Order.selection(
       clientId: clienId,
       orderPaymentValue: totalAmount,
@@ -73,7 +71,6 @@ notifyListeners();
        notifyListeners();
        return response;
     } catch (error) {
-      print(error);
       throw error;
     }
   }
@@ -103,7 +100,6 @@ final url=Uri.parse("$serverUrl/orders/cancel?id=$orderId");
        _orders.removeWhere((element) => element.orderId==orderId);
        notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
 }  
@@ -121,7 +117,6 @@ Future<double> getIncome()async{
 
       return double.parse(data);
     } catch (error) {
-      print(error);
       throw error;
     }
 }

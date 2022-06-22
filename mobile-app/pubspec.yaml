@@ -87,7 +87,6 @@ flutter:
      - assets/images/rating2.png
      - assets/images/debox.png
      - assets/images/shipping_icon.png
-     - lib/data/monthly_stats.json
 
      
   #   - images/a_dot_ham.jpeg

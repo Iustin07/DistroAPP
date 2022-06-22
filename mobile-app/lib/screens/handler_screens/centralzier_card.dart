@@ -1,4 +1,6 @@
-import 'package:distroapp/screens/handler_screens/centralizer_details.screen.dart';
+import 'package:distroapp/providers/authentification.dart';
+import 'package:provider/provider.dart';
+import './centralizer_details.screen.dart';
 import 'package:flutter/material.dart';
 class CentralizerCard extends StatelessWidget {
    CentralizerCard({Key? key,
@@ -45,8 +47,8 @@ class CentralizerCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Text('Value: ${value.toStringAsFixed(2)} Ron'),
-                        Text('weight: ${weight.toStringAsFixed(2)} kg'),
+                        Text('Value: ${value.toStringAsFixed(0)} Ron', softWrap: true,),
+                        Text('Weight: ${weight.toStringAsFixed(0)} kg', softWrap: true,),
                       
                       ],
                     )
@@ -57,7 +59,8 @@ class CentralizerCard extends StatelessWidget {
             ElevatedButton(onPressed: (){
               Navigator.of(context).pushNamed(CentralizerDetails.routeName, arguments: [centralizerId,driverName]);
             },
-             child:const  Text('Assign'))      
+             child:Provider.of<Authentication>(context).getRole=='handler'?const  Text('Assign'): const Text("Details")
+             ),      
       
           ],
         )

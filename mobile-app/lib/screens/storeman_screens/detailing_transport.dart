@@ -1,16 +1,14 @@
-
-import 'package:distroapp/providers/transport_cart.dart';
-import 'package:distroapp/screens/storeman_screens/shipping_screen.dart';
-import 'package:distroapp/widgets/simple_app_bat.dart';
 import 'package:flutter/material.dart';
-import '../../model/transport.dart';
 import 'package:provider/provider.dart';
-import '../../model/transport_item.dart';
 import './body_transport_arrived.dart';
 import './body_details_waiting.dart';
+import './shipping_screen.dart';
+import '../../providers/transport_cart.dart';
+import '../../widgets/simple_app_bat.dart';
+import '../../model/transport.dart';
 import '../../providers/transports.dart';
 class TransportDetails extends StatelessWidget {
-  TransportDetails({
+  const TransportDetails({
     Key? key,
   }) : super(key: key);
   static const routeName = "/transport-details";
@@ -27,6 +25,17 @@ class TransportDetails extends StatelessWidget {
               IconButton(onPressed: (){
  var transportCart =
               Provider.of<TransportCart>(context, listen: false);
+               if(transportCart.transportItems.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                   const SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                        'Can\'t add transport without products',
+                      ),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+               }else{
           Provider.of<Transports>(context, listen: false).updateTransport(
             transport.idTrasnport as int,
              transportCart.transportItems,
@@ -36,7 +45,7 @@ class TransportDetails extends StatelessWidget {
               .then((value) {
             if (value == 200) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                   const SnackBar(
                       backgroundColor: Colors.green,
                       content: Text(
                         'Transport was updated',
@@ -48,15 +57,15 @@ class TransportDetails extends StatelessWidget {
             context,
             MaterialPageRoute(
               
-              builder: (BuildContext context) => ShippingScreen(),
+              builder: (BuildContext context) => const ShippingScreen(),
             ),
             ModalRoute.withName('/'));
       }     
             
           });
           transportCart.clear();
-
-              }, icon: Icon(Icons.save))
+               }
+              }, icon: const Icon(Icons.save))
             ],)
             ,
         body: transport.received!

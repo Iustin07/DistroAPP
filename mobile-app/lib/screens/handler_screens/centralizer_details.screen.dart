@@ -63,19 +63,43 @@ bool _init=true;
           child: ListView.builder(
             itemCount: summar!.length,
             itemBuilder: (ctx,index)=>Container(
-              margin: const EdgeInsets.all(5),
-              height: 50,
-              color: Colors.amberAccent,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(236, 240, 241, 1),
+                borderRadius: BorderRadius.circular(10),
+              )
+              ,
+              margin: const EdgeInsets.only(top: 5,bottom: 5,left: 15,right: 15),
+              height: 60,
+              
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text('${index+1}'),
                   Text('${summar![index].productName}'),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                       Text('${summar![index].divider.palletQuantity} pal'),
-                  Text('${summar![index].divider.boxQuantiy} boxes'),
-                  Text('${summar![index].divider.bucQuantity} buc'),
+                       Row(
+                         children: [
+                           
+                           Text('${summar![index].divider.palletQuantity} pal '),
+                           const Icon(Icons.cabin_outlined,size: 15,),
+                         ],
+                       ),
+                  Row(
+                    children: [
+                     
+                      Text('${summar![index].divider.boxQuantiy} boxes'),
+                       Image.asset('assets/images/box-512.png',height: 18,),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                     
+                      Text('${summar![index].divider.bucQuantity} buc'),
+                       const Icon(Icons.ballot_outlined,size: 15,),
+                    ],
+                  ),
                     ],
                   )
                  
@@ -87,4 +111,5 @@ bool _init=true;
       ) ;
 
 }
+
 }

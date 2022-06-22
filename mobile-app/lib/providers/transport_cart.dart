@@ -1,6 +1,7 @@
-import 'package:distroapp/model/review.dart';
-import 'package:distroapp/model/transport_item.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import '../model/review.dart';
+import '../model/transport_item.dart';
+
 
 class TransportCart with ChangeNotifier{
 List<TransportItem> _transportItems=[];
